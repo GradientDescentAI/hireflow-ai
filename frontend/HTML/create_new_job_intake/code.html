@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HireFlow - Create Job</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#6f30dc",
+                        "surface-container-highest": "#e2e1ed",
+                        "on-primary-container": "#d4dcff",
+                        "primary": "#003fb1",
+                        "neutral-700": "#374151",
+                        "on-surface-variant": "#434654",
+                        "inverse-primary": "#b5c4ff",
+                        "neutral-200": "#e5e7eb",
+                        "secondary-fixed": "#eaddff",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "secondary-container": "#894ff7",
+                        "on-primary-fixed-variant": "#003dab",
+                        "on-error-container": "#93000a",
+                        "neutral-50": "#f9fafb",
+                        "on-primary-fixed": "#00174d",
+                        "surface": "#faf8ff",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "surface-tint": "#1353d8",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3fe",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "accent-ai": "#6c2bd9",
+                        "danger": "#c81e1e",
+                        "primary-container": "#1a56db",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#d2bcff",
+                        "surface-container-high": "#e7e7f3",
+                        "outline-variant": "#c3c5d7",
+                        "on-tertiary-container": "#ffd4c5",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-background": "#191b23",
+                        "surface-variant": "#e2e1ed",
+                        "neutral-900": "#111928",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#5900c7",
+                        "tertiary": "#852b00",
+                        "on-secondary-fixed": "#25005a",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface": "#191b23",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#ad3b00",
+                        "surface-container": "#ededf8",
+                        "inverse-surface": "#2e3039",
+                        "background": "#faf8ff",
+                        "surface-dim": "#d9d9e4",
+                        "on-primary": "#ffffff",
+                        "warning": "#c27803",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "outline": "#737686",
+                        "success": "#057a55"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-collapsed": "64px",
+                        "gutter": "1rem",
+                        "container-padding": "1.5rem",
+                        "sidebar-width": "240px",
+                        "max-content-width": "80rem",
+                        "card-padding": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-muted": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-xs": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-muted": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-md": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-xs": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-neutral-50 text-on-background h-screen flex overflow-hidden">
+<!-- Minimal Back-to-Main Header for Focused Views -->
+<header class="absolute top-0 left-0 w-full h-16 bg-surface-container-lowest border-b border-neutral-200 flex items-center px-6 z-10">
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-on-background transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+<span class="font-medium text-sm">Back to Jobs</span>
+</a>
+<div class="ml-auto flex items-center gap-2">
+<div class="bg-surface-container-highest rounded-full size-8 bg-cover bg-center" data-alt="A small, circular avatar placeholder image for a user profile in a professional application interface, showing a simple abstract shape or initial." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAJXzBTcu6qtTSv9hoMl_p4sixomXR4JtRsb0X5nsCg9zs5AhBNXyYgHA6nstgBvC1eZ0GgNFINoZYtaPYu7Q08dPGnZIPhg4GZTJP75I20laOSvaoDFY7QX4ih4iixvBV4nrJvIwDd39HEIoyP4h3QDWLcrl4FSXhvn_1-vkPfC8Tt97Ssdarx75UQG_pUs4ivCQZVGzxosfDQmk09JYqF0SP0D5CxKo6L17EUzXeingIAbWz88Hc24F4tv7VIxk7CPzk-hHd75vQ");'></div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center pt-16 px-4 pb-8 overflow-y-auto w-full">
+<div class="w-full max-w-2xl">
+<!-- Header Section -->
+<div class="mb-8 text-center">
+<h1 class="text-3xl font-bold text-on-background tracking-tight mb-2">Create a New Job</h1>
+<p class="text-on-surface-variant">Start by providing the source content for Riya to extract structured details.</p>
+</div>
+<!-- Main Input Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-neutral-200 shadow-sm p-6 sm:p-8">
+<!-- Input Type Toggle -->
+<div class="flex items-center justify-center mb-6">
+<div class="inline-flex bg-surface-container rounded-lg p-1">
+<button class="px-4 py-2 rounded-md bg-surface-container-lowest text-on-background font-medium text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            Paste Description
+                        </button>
+<button class="px-4 py-2 rounded-md text-on-surface-variant hover:text-on-background font-medium text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            Enter URL
+                        </button>
+</div>
+</div>
+<!-- Textarea Form -->
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-on-background mb-2" for="jd-input">
+                            Job Description Content
+                        </label>
+<textarea class="w-full h-64 p-4 rounded-lg border border-neutral-200 bg-surface focus:ring-2 focus:ring-primary focus:border-primary resize-none text-sm placeholder:text-outline" id="jd-input" placeholder="Paste the full job description here. Include details about responsibilities, requirements, benefits, and company overview..."></textarea>
+</div>
+<!-- Actions -->
+<div class="flex flex-col items-center pt-4 border-t border-neutral-200">
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-accent-ai text-white font-medium hover:bg-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-accent-ai/50 shadow-sm">
+<span class="material-symbols-outlined text-lg">auto_awesome</span>
+                            Extract with AI
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<p class="mt-3 text-body-muted text-on-surface-variant text-center max-w-sm">
+<span class="font-medium text-accent-ai inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">auto_awesome</span> Riya</span> will extract structured fields. You'll review and edit everything before posting.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Footer links -->
+<div class="mt-6 text-center">
+<a class="text-sm font-medium text-primary hover:text-primary-container transition-colors" href="#">Start from scratch instead</a>
+</div>
+</div>
+</main>
+</body></html>

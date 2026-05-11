@@ -1,0 +1,12 @@
+Company name: $company_name
+Role ID: $role_id
+
+Job Description summary:
+Title: $title
+Location: $location_type in $city
+Salary: $salary_range
+Responsibilities: $responsibilities
+Must-haves: $must_haves
+Tech stack: $tech_stack
+
+Write the LinkedIn post following the 8-section structure. Return the post body only.

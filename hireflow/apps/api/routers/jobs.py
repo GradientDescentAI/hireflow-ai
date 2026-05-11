@@ -1,0 +1,327 @@
+"""
+Job management endpoints — PRD §10.1 core endpoints.
+
+POST  /api/v1/jobs                       create job + kick off JD extraction
+GET   /api/v1/jobs/{job_id}              get job state + channel status
+POST  /api/v1/jobs/{job_id}/confirm      recruiter approves extracted JD (→ approved)
+POST  /api/v1/jobs/{job_id}/distribute   trigger distribution (job must be approved)
+GET   /api/v1/jobs/{job_id}/posts        list channel posts
+GET   /api/v1/jobs/{job_id}/applications list applications (filterable)
+POST  /api/v1/jobs/{job_id}/score        trigger batch scoring (async)
+GET   /api/v1/jobs/{job_id}/shortlist    ranked shortlist with scores
+GET   /api/v1/jobs/{job_id}/audit        full audit trail
+"""
+
+import uuid
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, Field
+
+from apps.api.middleware.auth import TokenData, get_current_user
+from packages.audit.logger import EventType, log_event
+from packages.bus.publisher import publish
+from packages.bus.topics import Topics
+from packages.db.models import ChannelPost, Job, AuditEvent
+from packages.db.session import get_db
+
+router = APIRouter(prefix="/api/v1", tags=["jobs"])
+
+
+# ── Request / Response models ─────────────────────────────────────────────────
+
+class CreateJobRequest(BaseModel):
+    raw_jd_text: str | None = None
+    raw_jd_url: str | None = None
+
+
+class DistributeRequest(BaseModel):
+    channels: list[str] = Field(default_factory=list)
+    channel_config: dict = Field(default_factory=dict)
+
+
+class JobResponse(BaseModel):
+    id: uuid.UUID
+    tenant_id: uuid.UUID
+    title: str
+    status: str
+    collection_email: str | None
+    created_at: str
+    posted_at: str | None
+
+    class Config:
+        from_attributes = True
+
+
+# ── Endpoints ─────────────────────────────────────────────────────────────────
+
+@router.post("/jobs", status_code=status.HTTP_202_ACCEPTED)
+def create_job(
+    body: CreateJobRequest,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Create a job and kick off JD extraction. Returns job_id immediately."""
+    if not body.raw_jd_text and not body.raw_jd_url:
+        raise HTTPException(status_code=400, detail="Provide raw_jd_text or raw_jd_url")
+
+    job_id = uuid.uuid4()
+
+    with get_db() as db:
+        job = Job(
+            id=job_id,
+            tenant_id=user.tenant_id,
+            created_by=user.recruiter_id,
+            title="Pending extraction",
+            location={},
+            status="draft",
+            raw_jd_text=body.raw_jd_text,
+        )
+        db.add(job)
+
+    log_event(
+        EventType.JD_CREATED,
+        tenant_id=user.tenant_id,
+        user_id=user.recruiter_id,
+        entity_type="job",
+        entity_id=job_id,
+        data={"source": "text" if body.raw_jd_text else "url"},
+    )
+
+    publish(
+        Topics.JD_APPROVED,
+        {"job_id": str(job_id), "raw_jd_text": body.raw_jd_text, "raw_jd_url": body.raw_jd_url},
+        tenant_id=user.tenant_id,
+    )
+
+    return {"job_id": str(job_id), "status": "draft", "message": "JD extraction started"}
+
+
+@router.get("/jobs/{job_id}")
+def get_job(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+
+        posts = db.query(ChannelPost).filter_by(job_id=job_id).all()
+        channel_status = {
+            p.channel: {"status": p.delivery_status, "post_url": p.post_url}
+            for p in posts
+        }
+
+        return {
+            "id": str(job.id),
+            "title": job.title,
+            "status": job.status,
+            "collection_email": job.collection_email,
+            "channel_status": channel_status,
+            "created_at": job.created_at.isoformat(),
+            "posted_at": job.posted_at.isoformat() if job.posted_at else None,
+        }
+
+
+@router.post("/jobs/{job_id}/confirm", status_code=status.HTTP_200_OK)
+def confirm_job(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Recruiter confirms the AI-extracted JD.  Transitions job to 'approved'
+    so the Distribute button becomes available in the UI."""
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+        if job.status not in ("draft", "extraction_complete"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Job cannot be confirmed from status '{job.status}'",
+            )
+        job.status = "approved"
+
+    log_event(
+        EventType.JD_CONFIRMED,
+        tenant_id=user.tenant_id,
+        user_id=user.recruiter_id,
+        entity_type="job",
+        entity_id=job_id,
+        data={"confirmed_by": str(user.recruiter_id)},
+    )
+
+    return {"job_id": str(job_id), "status": "approved"}
+
+
+@router.post("/jobs/{job_id}/distribute", status_code=status.HTTP_202_ACCEPTED)
+def distribute_job(
+    job_id: uuid.UUID,
+    body: DistributeRequest,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Trigger Distribution Orchestrator. Job must be in 'approved' status."""
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+        if job.status != "approved":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Job must be in 'approved' status to distribute. Current: {job.status}",
+            )
+        job.status = "posted"
+        job.distribution_channels = body.channels
+        job.channel_config = body.channel_config
+
+    log_event(
+        EventType.DISTRIBUTION_STARTED,
+        tenant_id=user.tenant_id,
+        user_id=user.recruiter_id,
+        entity_type="job",
+        entity_id=job_id,
+        data={"channels": body.channels},
+    )
+
+    publish(
+        Topics.DISTRIBUTION_STARTED,
+        {"job_id": str(job_id), "channels": body.channels, "channel_config": body.channel_config},
+        tenant_id=user.tenant_id,
+    )
+
+    return {"job_id": str(job_id), "status": "posted", "channels_queued": body.channels}
+
+
+@router.get("/jobs/{job_id}/posts")
+def list_posts(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    with get_db() as db:
+        posts = db.query(ChannelPost).filter_by(job_id=job_id, tenant_id=user.tenant_id).all()
+        return [
+            {
+                "id": str(p.id),
+                "channel": p.channel,
+                "delivery_status": p.delivery_status,
+                "post_url": p.post_url,
+                "posted_at": p.posted_at.isoformat() if p.posted_at else None,
+                "disclosure_included": p.disclosure_included,
+                "metrics": p.metrics,
+            }
+            for p in posts
+        ]
+
+
+@router.get("/jobs/{job_id}/applications")
+def list_applications(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+    channel: str | None = None,
+    status: str | None = None,
+):
+    from packages.db.models import Candidate
+
+    with get_db() as db:
+        q = db.query(Candidate).filter_by(job_id=job_id, tenant_id=user.tenant_id)
+        if channel:
+            q = q.filter_by(source_channel=channel)
+        if status:
+            q = q.filter_by(status=status)
+        candidates = q.order_by(Candidate.applied_at.desc()).all()
+
+        return [
+            {
+                "id": str(c.id),
+                "name": c.name,
+                "email": c.email,
+                "source_channel": c.source_channel,
+                "status": c.status,
+                "applied_at": c.applied_at.isoformat(),
+                "parse_confidence": c.parse_confidence,
+                "parse_flagged": c.parse_flagged,
+            }
+            for c in candidates
+        ]
+
+
+@router.post("/jobs/{job_id}/score", status_code=status.HTTP_202_ACCEPTED)
+def trigger_scoring(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Queue all parsed candidates for scoring. Async — check /shortlist for results."""
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+        job.status = "scoring"
+
+    # Publish CV_PARSED with job-level trigger so the worker runs batch scoring
+    publish(
+        Topics.CV_PARSED,
+        {"job_id": str(job_id), "trigger": "manual_score_request"},
+        tenant_id=user.tenant_id,
+    )
+
+    return {"job_id": str(job_id), "status": "scoring", "message": "Scoring queued"}
+
+
+@router.get("/jobs/{job_id}/shortlist")
+def get_shortlist(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    from packages.db.models import CandidateScore, Candidate
+
+    with get_db() as db:
+        scores = (
+            db.query(CandidateScore)
+            .filter_by(job_id=job_id, tenant_id=user.tenant_id)
+            .order_by(CandidateScore.rank)
+            .all()
+        )
+        result = []
+        for s in scores:
+            c = db.get(Candidate, s.candidate_id)
+            result.append({
+                "score_id": str(s.id),
+                "candidate_id": str(s.candidate_id),
+                "name": c.name if c else None,
+                "rank": s.rank,
+                "composite_score": s.composite_score,
+                "dimension_scores": s.dimension_scores,
+                "justification": s.justification,
+                "strengths": s.strengths,
+                "risks": s.risks,
+                "near_miss_flag": s.near_miss_flag,
+                "recruiter_status": s.recruiter_status,
+                "nps_thumb": s.nps_thumb,
+                "source_channel": c.source_channel if c else None,
+            })
+        return result
+
+
+@router.get("/jobs/{job_id}/audit")
+def get_audit_trail(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    with get_db() as db:
+        events = (
+            db.query(AuditEvent)
+            .filter_by(tenant_id=user.tenant_id, entity_id=job_id)
+            .order_by(AuditEvent.created_at)
+            .all()
+        )
+        return [
+            {
+                "id": str(e.id),
+                "event_type": e.event_type,
+                "entity_type": e.entity_type,
+                "channel": e.channel,
+                "content_hash": e.content_hash,
+                "data": e.data,
+                "created_at": e.created_at.isoformat(),
+            }
+            for e in events
+        ]

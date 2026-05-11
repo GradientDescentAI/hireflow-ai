@@ -1,0 +1,10 @@
+JOB DESCRIPTION:
+$jd_json
+
+BIAS AUDIT STATUS:
+$bias_audit_status
+
+TOP $shortlist_size CANDIDATES (ranked, anonymised profiles):
+$candidates_json
+
+Generate the shortlist justification JSON now.

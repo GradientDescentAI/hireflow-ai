@@ -1,0 +1,7 @@
+Job Description:
+$jd_json
+
+Candidate Profile (PII removed):
+$candidate_json
+
+Score this candidate against the job description. Return the JSON object only.

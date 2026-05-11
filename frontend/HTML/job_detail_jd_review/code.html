@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JD Review</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#6f30dc",
+                        "surface-container-highest": "#e2e1ed",
+                        "on-primary-container": "#d4dcff",
+                        "primary": "#003fb1",
+                        "neutral-700": "#374151",
+                        "on-surface-variant": "#434654",
+                        "inverse-primary": "#b5c4ff",
+                        "neutral-200": "#e5e7eb",
+                        "secondary-fixed": "#eaddff",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "secondary-container": "#894ff7",
+                        "on-primary-fixed-variant": "#003dab",
+                        "on-error-container": "#93000a",
+                        "neutral-50": "#f9fafb",
+                        "on-primary-fixed": "#00174d",
+                        "surface": "#faf8ff",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "surface-tint": "#1353d8",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3fe",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "accent-ai": "#6c2bd9",
+                        "danger": "#c81e1e",
+                        "primary-container": "#1a56db",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#d2bcff",
+                        "surface-container-high": "#e7e7f3",
+                        "outline-variant": "#c3c5d7",
+                        "on-tertiary-container": "#ffd4c5",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-background": "#191b23",
+                        "surface-variant": "#e2e1ed",
+                        "neutral-900": "#111928",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#5900c7",
+                        "tertiary": "#852b00",
+                        "on-secondary-fixed": "#25005a",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface": "#191b23",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#ad3b00",
+                        "surface-container": "#ededf8",
+                        "inverse-surface": "#2e3039",
+                        "background": "#faf8ff",
+                        "surface-dim": "#d9d9e4",
+                        "on-primary": "#ffffff",
+                        "warning": "#c27803",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "outline": "#737686",
+                        "success": "#057a55"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-collapsed": "64px",
+                        "gutter": "1rem",
+                        "container-padding": "1.5rem",
+                        "sidebar-width": "240px",
+                        "max-content-width": "80rem",
+                        "card-padding": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-muted": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "label-xs": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-muted": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-md": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-xs": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-neutral-50 text-on-background min-h-screen flex flex-col antialiased">
+<!-- TopNavBar Shared Component -->
+<div class="relative flex h-auto w-full flex-col bg-surface-container-lowest group/design-root overflow-x-hidden border-b border-neutral-200">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-container-padding flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-max-content-width flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-neutral-200 px-gutter py-3">
+<div class="flex items-center gap-4 text-on-background">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-on-background text-headline-lg">Hiring Platform</h2>
+</div>
+</header>
+<div class="pb-3">
+<div class="flex border-b border-neutral-200 px-4 justify-start gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-on-background pb-[13px] pt-4" href="#">
+<p class="text-on-background text-sm font-bold leading-normal tracking-[0.015em]">JD Review</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-neutral-700 hover:text-on-background pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Candidates</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-neutral-700 hover:text-on-background pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Analytics</p>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-max-content-width mx-auto px-container-padding py-8 flex gap-8">
+<!-- Left Column: Form & Warnings -->
+<div class="flex-1 flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<h1 class="text-headline-lg text-on-background">Review Job Description</h1>
+<div class="inline-flex items-center gap-2 bg-accent-ai/10 text-accent-ai px-3 py-1.5 rounded-full text-label-xs">
+<span class="material-symbols-outlined text-[16px]">magic_button</span>
+<span>AI Extracted</span>
+</div>
+</div>
+<!-- Alerts -->
+<div class="flex flex-col gap-4">
+<div class="flex items-start gap-4 rounded-xl bg-error/10 border border-error/20 p-4">
+<span class="material-symbols-outlined text-error mt-0.5">warning</span>
+<div class="flex flex-col gap-1">
+<p class="text-error text-sm font-bold leading-tight">Bias Flag Detected</p>
+<p class="text-error/80 text-sm font-normal leading-normal">'young and energetic' flagged as age-coded. Consider revising to 'dynamic and proactive'.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 rounded-xl bg-warning/10 border border-warning/20 p-4">
+<span class="material-symbols-outlined text-warning mt-0.5">location_on</span>
+<div class="flex flex-col gap-1">
+<p class="text-warning text-sm font-bold leading-tight">Karnataka Salary Warning</p>
+<p class="text-warning/80 text-sm font-normal leading-normal">Salary range may need adjustment for Bangalore market standards and local compliance.</p>
+</div>
+</div>
+</div>
+<!-- Job Details Form -->
+<section class="bg-surface-container-lowest rounded-xl border border-neutral-200 p-card-padding shadow-sm flex flex-col gap-6">
+<h3 class="text-headline-md text-on-background border-b border-neutral-100 pb-2">Job Details</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-1.5">
+<label class="text-label-xs text-neutral-700">Job Title</label>
+<input class="w-full rounded-lg border-neutral-200 focus:border-primary focus:ring-primary text-body-sm px-3 py-2" type="text" value="Senior Frontend Developer"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-label-xs text-neutral-700">Location</label>
+<input class="w-full rounded-lg border-warning/50 focus:border-warning focus:ring-warning text-body-sm px-3 py-2 bg-warning/5" type="text" value="Bangalore, Karnataka"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-label-xs text-neutral-700">Salary Range (INR)</label>
+<div class="flex items-center gap-2">
+<input class="w-full rounded-lg border-neutral-200 focus:border-primary focus:ring-primary text-body-sm px-3 py-2" type="text" value="18,00,000"/>
+<span class="text-neutral-500">-</span>
+<input class="w-full rounded-lg border-neutral-200 focus:border-primary focus:ring-primary text-body-sm px-3 py-2" type="text" value="25,00,000"/>
+</div>
+</div>
+<div class="flex flex-col justify-center pt-6">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="rounded border-neutral-300 text-primary focus:ring-primary w-5 h-5" type="checkbox"/>
+<span class="text-body-sm text-neutral-700">Remote Optional</span>
+</label>
+</div>
+</div>
+</section>
+<!-- Extracted Requirements -->
+<section class="bg-surface-container-lowest rounded-xl border border-neutral-200 p-card-padding shadow-sm flex flex-col gap-6">
+<h3 class="text-headline-md text-on-background border-b border-neutral-100 pb-2">Requirements</h3>
+<div class="flex flex-col gap-4">
+<div>
+<h4 class="text-sm font-semibold text-neutral-700 mb-2">Must-Haves</h4>
+<ul class="flex flex-col gap-2">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success text-[20px] mt-0.5">check_circle</span>
+<span class="text-body-sm text-neutral-700">5+ years React.js experience</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success text-[20px] mt-0.5">check_circle</span>
+<span class="text-body-sm text-neutral-700">Strong understanding of state management (Redux/Zustand)</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-error text-[20px] mt-0.5">warning</span>
+<span class="text-body-sm text-neutral-700 line-through">Young and energetic team player</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-neutral-700 mb-2">Tech Stack</h4>
+<div class="flex flex-wrap gap-2">
+<span class="inline-flex items-center px-3 py-1 rounded-full border border-neutral-200 bg-neutral-50 text-label-xs text-neutral-700">React</span>
+<span class="inline-flex items-center px-3 py-1 rounded-full border border-neutral-200 bg-neutral-50 text-label-xs text-neutral-700">TypeScript</span>
+<span class="inline-flex items-center px-3 py-1 rounded-full border border-neutral-200 bg-neutral-50 text-label-xs text-neutral-700">Next.js</span>
+<span class="inline-flex items-center px-3 py-1 rounded-full border border-neutral-200 bg-neutral-50 text-label-xs text-neutral-700">Tailwind CSS</span>
+<button class="inline-flex items-center px-3 py-1 rounded-full border border-dashed border-neutral-300 text-neutral-500 hover:bg-neutral-50 text-label-xs">
+<span class="material-symbols-outlined text-[16px] mr-1">add</span> Add
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Scoring Rubric -->
+<div class="w-[360px] flex-shrink-0 flex flex-col gap-6">
+<section class="bg-surface-container-lowest rounded-xl border border-neutral-200 p-card-padding shadow-sm flex flex-col gap-6 sticky top-8">
+<div class="flex items-center justify-between border-b border-neutral-100 pb-2">
+<h3 class="text-headline-md text-on-background">Scoring Rubric</h3>
+<div class="inline-flex items-center gap-1 bg-accent-ai/10 text-accent-ai px-2 py-1 rounded text-label-xs">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+<span>Auto-weighted</span>
+</div>
+</div>
+<div class="flex flex-col gap-5">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-sm font-medium text-neutral-700">Technical Skills</label>
+<span class="text-label-xs text-primary font-semibold">40%</span>
+</div>
+<input class="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="40"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-sm font-medium text-neutral-700">Experience Level</label>
+<span class="text-label-xs text-primary font-semibold">30%</span>
+</div>
+<input class="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="30"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-sm font-medium text-neutral-700">Communication</label>
+<span class="text-label-xs text-primary font-semibold">20%</span>
+</div>
+<input class="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="20"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-sm font-medium text-neutral-700">Cultural Fit</label>
+<span class="text-label-xs text-primary font-semibold">10%</span>
+</div>
+<input class="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="10"/>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-neutral-100 flex justify-between items-center">
+<span class="text-sm font-semibold text-neutral-700">Total Weight</span>
+<span class="text-sm font-bold text-success">100%</span>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<div class="sticky bottom-0 w-full bg-surface-container-lowest border-t border-neutral-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10">
+<div class="max-w-max-content-width mx-auto px-container-padding flex justify-end items-center gap-4">
+<button class="px-4 py-2 rounded-lg border border-neutral-200 text-neutral-700 font-medium text-sm hover:bg-neutral-50 transition-colors">
+                Save changes
+            </button>
+<button class="px-6 py-2 rounded-lg bg-primary text-on-primary font-medium text-sm hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm">
+                Confirm &amp; Approve
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HireFlow AI - Distribution Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#faf8ff",
+                        "tertiary-container": "#ad3b00",
+                        "on-background": "#191b23",
+                        "inverse-primary": "#b5c4ff",
+                        "surface-container": "#ededf8",
+                        "success": "#057a55",
+                        "surface-variant": "#e2e1ed",
+                        "secondary-fixed-dim": "#d2bcff",
+                        "surface-tint": "#1353d8",
+                        "neutral-50": "#f9fafb",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "surface-container-highest": "#e2e1ed",
+                        "warning": "#c27803",
+                        "tertiary": "#852b00",
+                        "inverse-on-surface": "#f0f0fb",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "outline": "#737686",
+                        "inverse-surface": "#2e3039",
+                        "on-tertiary-container": "#ffd4c5",
+                        "surface-dim": "#d9d9e4",
+                        "neutral-900": "#111928",
+                        "surface-container-high": "#e7e7f3",
+                        "secondary-fixed": "#eaddff",
+                        "on-surface-variant": "#434654",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#00174d",
+                        "secondary": "#6f30dc",
+                        "primary": "#003fb1",
+                        "accent-ai": "#6c2bd9",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-secondary-fixed": "#25005a",
+                        "on-primary-container": "#d4dcff",
+                        "outline-variant": "#c3c5d7",
+                        "on-secondary-fixed-variant": "#5900c7",
+                        "on-primary-fixed-variant": "#003dab",
+                        "surface-container-low": "#f3f3fe",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "neutral-700": "#374151",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-bright": "#faf8ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "neutral-200": "#e5e7eb",
+                        "error-container": "#ffdad6",
+                        "danger": "#c81e1e",
+                        "secondary-container": "#894ff7",
+                        "surface": "#faf8ff",
+                        "primary-container": "#1a56db",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcf",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-surface": "#191b23"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "sidebar-collapsed": "64px",
+                        "gutter": "1rem",
+                        "card-padding": "1.5rem",
+                        "container-padding": "1.5rem",
+                        "max-content-width": "80rem",
+                        "sidebar-width": "240px"
+                    },
+                    fontFamily: {
+                        "label-xs": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "body-muted": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen flex overflow-hidden">
+<!-- Sidebar (Shared Component Architecture) -->
+<aside class="w-sidebar-width bg-surface-container-low border-r border-outline-variant flex flex-col justify-between hidden md:flex shrink-0 h-full">
+<div class="flex flex-col gap-4 p-4">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2 py-4 mb-2">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-on-surface text-lg font-bold leading-tight tracking-tight">HireFlow AI</h2>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-variant text-on-surface transition-colors" href="#">
+<div data-icon="Layout" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V96H40V56ZM40,112H96v88H40Zm176,88H112V112H216v88Z"></path>
+</svg>
+</div>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-variant text-on-surface transition-colors" href="#">
+<div data-icon="Briefcase" data-size="24px" data-weight="fill" style="font-variation-settings: 'FILL' 1;">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M152,112a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,112Zm80-40V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V72A16,16,0,0,1,40,56H80V48a24,24,0,0,1,24-24h48a24,24,0,0,1,24,24v8h40A16,16,0,0,1,232,72ZM96,56h64V48a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8Zm120,57.61V72H40v41.61A184,184,0,0,0,128,136,184,184,0,0,0,216,113.61Z"></path>
+</svg>
+</div>
+<span class="text-sm font-medium">Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-variant text-on-surface transition-colors" href="#">
+<div data-icon="Users" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
+</svg>
+</div>
+<span class="text-sm font-medium">Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-variant text-on-surface transition-colors" href="#">
+<div data-icon="ChartBar" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"></path>
+</svg>
+</div>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-variant text-on-surface transition-colors" href="#">
+<div data-icon="Gear" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg">
+<path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"></path>
+</svg>
+</div>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- User Profile -->
+<div class="p-4 border-t border-outline-variant flex items-center gap-3">
+<div class="bg-surface-variant rounded-full w-10 h-10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">person</span>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-sm font-semibold text-on-surface truncate">Admin User</span>
+<span class="text-xs text-on-surface-variant truncate">admin@hireflow.ai</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background">
+<!-- Top App Bar (Minimal Back Navigation) -->
+<header class="h-16 border-b border-outline-variant bg-surface px-6 flex items-center gap-4 shrink-0">
+<button class="text-on-surface hover:text-primary transition-colors flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Back to Jobs List</span>
+<h1 class="text-sm font-semibold text-on-surface leading-tight">Distribution Setup</h1>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto p-6 md:p-8">
+<div class="max-w-max-content-width mx-auto flex flex-col gap-6">
+<!-- Page Header & Actions -->
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 flex-wrap">
+<h2 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">Senior Frontend Developer</h2>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-success/10 text-success border border-success/20">
+                                Approved
+                            </span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Job ID: ACME-PM-2026-12</p>
+</div>
+<button class="bg-primary text-on-primary hover:bg-primary-fixed-variant transition-colors px-5 py-2.5 rounded-lg font-semibold text-sm shadow-sm flex items-center gap-2 shrink-0 self-start">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+                        Launch All Channels
+                    </button>
+</div>
+<!-- Compliance Banner -->
+<div class="bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-4 flex gap-4 items-start shadow-sm">
+<span class="material-symbols-outlined text-[#166534] mt-0.5">verified</span>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-semibold text-[#166534]">Compliance Requirements Met</p>
+<div class="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-[#15803d]">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">check</span> AI Disclosure present in all active drafts</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">check</span> Karnataka Salary Disclosure requirement met</span>
+</div>
+</div>
+</div>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+<!-- Left Column: Primary Channels (LinkedIn) -->
+<div class="xl:col-span-2 flex flex-col gap-6">
+<!-- LinkedIn Card -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="px-6 py-4 border-b border-neutral-200 bg-neutral-50 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#0a66c2]" style="font-variation-settings: 'FILL' 1;">work</span>
+<h3 class="font-semibold text-on-surface text-base">LinkedIn (P0)</h3>
+</div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                                    Ready to post
+                                </span>
+</div>
+<div class="p-6 flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-on-surface-variant">Preview of Riya's draft post</span>
+<button class="text-sm font-medium text-primary hover:text-primary-fixed-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">edit</span> Edit Draft
+                                    </button>
+</div>
+<!-- LinkedIn Post Mockup -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-5 flex flex-col gap-4">
+<!-- AI Disclosure Badge inside Post -->
+<div class="bg-accent-ai/10 text-accent-ai px-3 py-2 rounded flex items-center gap-2 w-fit">
+<span class="material-symbols-outlined text-base">smart_toy</span>
+<span class="text-xs font-semibold italic">Posted by Riya, an AI hiring assistant for Acme Corp.</span>
+</div>
+<div class="text-sm text-on-surface leading-relaxed flex flex-col gap-4">
+<p>🚀 We're expanding our engineering team at Acme Corp and looking for a Senior Frontend Developer to lead our next-gen web platform!</p>
+<div>
+<p class="font-semibold mb-1">Must-Haves:</p>
+<ul class="list-none flex flex-col gap-1">
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-success text-base shrink-0">check_circle</span> 5+ years of production experience with React.js &amp; TypeScript</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-success text-base shrink-0">check_circle</span> Deep understanding of state management and web performance</li>
+<li class="flex items-start gap-2"><span class="material-symbols-outlined text-success text-base shrink-0">check_circle</span> Mentorship experience and system design thinking</li>
+</ul>
+</div>
+<div class="bg-warning/10 border-l-4 border-warning p-3 rounded-r text-xs text-on-surface-variant">
+<span class="font-semibold block mb-1">Location &amp; Compensation (Karnataka Compliant):</span>
+                                            Bangalore, India (Hybrid) • ₹35,00,000 - ₹45,00,000 INR Base + Equity
+                                        </div>
+<p class="font-medium">
+                                            Interested? Apply directly by sending your resume to: <br/>
+<a class="text-primary hover:underline" href="#">apply-acme-pm-2026-12@hireflow.in</a>
+</p>
+<p class="text-outline text-xs mt-2">
+                                            #React #Frontend #Hiring #BangaloreTech #AcmeCorpCareers
+                                        </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Secondary Channels & Settings -->
+<div class="flex flex-col gap-6">
+<!-- WhatsApp Groups -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm overflow-hidden">
+<div class="px-5 py-4 border-b border-neutral-200 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#25D366]">forum</span>
+<h3 class="font-semibold text-on-surface text-sm">WhatsApp Groups</h3>
+</div>
+<span class="text-xs font-medium text-success bg-success/10 px-2 py-0.5 rounded">Configured</span>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<p class="text-xs text-on-surface-variant font-medium mb-1">Whitelisted Broadcast Groups</p>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="rounded border-outline text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-on-surface">Bangalore Tech Referrals</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="rounded border-outline text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-on-surface">React India Experts</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer mt-1">
+<span class="material-symbols-outlined text-outline text-lg">add_circle</span>
+<span class="text-sm text-on-surface-variant hover:text-primary transition-colors">Add another group</span>
+</label>
+</div>
+</div>
+<!-- Telegram -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm overflow-hidden">
+<div class="px-5 py-4 border-b border-neutral-200 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#0088cc]" style="font-variation-settings: 'FILL' 1;">send</span>
+<h3 class="font-semibold text-on-surface text-sm">Telegram</h3>
+</div>
+<span class="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">Enabled</span>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-on-surface">HireFlow Partner Channels</span>
+<span class="text-xs text-on-surface-variant">Includes 'Bangalore Tech Jobs'</span>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</div>
+</div>
+</div>
+<!-- Job Boards -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm overflow-hidden">
+<div class="px-5 py-4 border-b border-neutral-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">dashboard</span>
+<h3 class="font-semibold text-on-surface text-sm">Job Boards</h3>
+</div>
+<div class="p-5 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-on-surface">Naukri India</span>
+<span class="text-[10px] font-semibold bg-surface-variant text-on-surface-variant px-1.5 py-0.5 rounded uppercase tracking-wide">Free Tier</span>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-on-surface">Indeed India</span>
+<span class="text-[10px] font-semibold bg-surface-variant text-on-surface-variant px-1.5 py-0.5 rounded uppercase tracking-wide">Free Tier</span>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</div>
+</div>
+</div>
+<!-- Cadence Settings -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm overflow-hidden">
+<div class="px-5 py-4 border-b border-neutral-200 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+<h3 class="font-semibold text-on-surface text-sm">Posting Cadence</h3>
+</div>
+<button class="text-xs font-medium text-primary hover:underline">Edit</button>
+</div>
+<div class="p-5 flex flex-col gap-3 text-sm">
+<div class="flex justify-between items-center border-b border-surface-variant pb-2">
+<span class="text-on-surface-variant">LinkedIn Window</span>
+<span class="font-medium text-on-surface">09:00 - 19:00 IST</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Channel Spacing</span>
+<span class="font-medium text-on-surface">90 minutes</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HireFlow AI - Audit Trail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#852b00",
+                        "surface": "#faf8ff",
+                        "inverse-primary": "#b5c4ff",
+                        "neutral-50": "#f9fafb",
+                        "tertiary-container": "#ad3b00",
+                        "outline": "#737686",
+                        "on-primary-container": "#d4dcff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#434654",
+                        "secondary": "#6f30dc",
+                        "secondary-container": "#894ff7",
+                        "surface-container-low": "#f3f3fe",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#d2bcff",
+                        "success": "#057a55",
+                        "tertiary-fixed": "#ffdbcf",
+                        "primary-container": "#1a56db",
+                        "on-secondary-fixed": "#25005a",
+                        "on-primary-fixed-variant": "#003dab",
+                        "outline-variant": "#c3c5d7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary-fixed": "#380d00",
+                        "inverse-surface": "#2e3039",
+                        "accent-ai": "#6c2bd9",
+                        "neutral-700": "#374151",
+                        "surface-tint": "#1353d8",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "on-surface": "#191b23",
+                        "surface-container-highest": "#e2e1ed",
+                        "surface-container": "#ededf8",
+                        "neutral-900": "#111928",
+                        "on-primary-fixed": "#00174d",
+                        "danger": "#c81e1e",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9d9e4",
+                        "background": "#faf8ff",
+                        "on-tertiary-container": "#ffd4c5",
+                        "on-secondary-fixed-variant": "#5900c7",
+                        "secondary-fixed": "#eaddff",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "neutral-200": "#e5e7eb",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface-container-high": "#e7e7f3",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#faf8ff",
+                        "warning": "#c27803",
+                        "on-background": "#191b23",
+                        "surface-variant": "#e2e1ed",
+                        "primary": "#003fb1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "max-content-width": "80rem",
+                        "sidebar-width": "240px",
+                        "sidebar-collapsed": "64px",
+                        "container-padding": "1.5rem",
+                        "card-padding": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "label-xs": ["Inter", "sans-serif"],
+                        "body-muted": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .json-key { color: #003fb1; }
+        .json-string { color: #057a55; }
+        .json-number { color: #c27803; }
+        .json-boolean { color: #6c2bd9; }
+    </style>
+</head>
+<body class="bg-neutral-50 text-on-surface min-h-screen flex font-body-sm">
+<!-- Fixed Sidebar -->
+<aside class="fixed inset-y-0 left-0 w-sidebar-width bg-surface-container-lowest border-r border-neutral-200 flex flex-col z-20">
+<!-- Brand Header -->
+<div class="flex items-center h-16 px-6 border-b border-neutral-200 shrink-0">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-xl font-bold">work</span>
+</div>
+<h1 class="font-headline-md font-semibold text-neutral-900">HireFlow AI</h1>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-neutral-700 hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-neutral-700 hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="font-medium">Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-neutral-700 hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-medium">Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-neutral-700 hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-medium">Agents</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-neutral-700 hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-container-high text-primary font-medium mt-4" href="#">
+<span class="material-symbols-outlined" data-icon="history" data-weight="fill">history</span>
+<span>Audit Trail</span>
+</a>
+</nav>
+<!-- User Profile (Bottom) -->
+<div class="p-4 border-t border-neutral-200 shrink-0">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="w-10 h-10 rounded-full" data-alt="A small circular avatar placeholder image indicating the currently logged-in user, typically found in a sidebar footer. The image uses a solid, muted purple background with a darker purple initial or icon centered inside. The style is clean, modern, and fits within a professional corporate software interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlhpY_gNu6wDm06_ECA99F1ctGXCk5_ZoSVJlYQbsPUESRgGt1GoPC4MixE1NVchrfpc6RSQj88zmRmbyPKwPceQ3S0lnwLS7xNiqmeu5_WjOhnn3b7fs6ZJg4TcmuvXdGWbva8UO9CgpnXxh8as-KXxeXw29fQNvNgrhgq39GvpFoWYJKj_oLr-KoPHaOVgLVKe4UFlzQG54hMo6dkijxq6kNzRr9e2Q6XCeYPdCCGdiikBpnCoYailVGcYBgtOsfwVDNMCOQ53g"/>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-neutral-900">Sarah Jenkins</span>
+<span class="text-xs text-outline">Lead Recruiter</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[240px] flex flex-col h-screen overflow-hidden bg-neutral-50">
+<!-- Top App Bar (Contextual) -->
+<header class="h-16 bg-surface-container-lowest border-b border-neutral-200 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<a class="text-outline hover:text-primary transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-low" href="#">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</a>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium text-outline uppercase tracking-wider">Job Context</span>
+<span class="text-xs text-neutral-200 px-1">•</span>
+<span class="text-xs font-medium text-primary">Senior Frontend Developer</span>
+</div>
+<h2 class="font-headline-md font-semibold text-neutral-900">Audit Trail</h2>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-surface-container-lowest border border-neutral-200 rounded-lg text-neutral-700 text-sm font-medium hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+                    Export CSV
+                </button>
+</div>
+</header>
+<!-- Scrollable Content Container -->
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-7xl mx-auto space-y-6">
+<!-- Header & Description -->
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-bold text-neutral-900 tracking-tight">System Events Log</h3>
+<p class="text-sm text-outline">A verifiable, chronological record of all AI agent actions, system states, and manual recruiter overrides for this requisition.</p>
+</div>
+<!-- Filters & Search Bar -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 shadow-sm items-center justify-between">
+<div class="flex-1 w-full relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-transparent focus:border-primary focus:bg-surface-container-lowest focus:ring-0 rounded-lg text-sm text-neutral-900 placeholder:text-outline transition-colors" placeholder="Search events by ID, entity, or keyword..." type="text"/>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-3 py-1.5 bg-surface-container-highest text-neutral-900 rounded-md text-xs font-medium border border-transparent">All Events</button>
+<button class="px-3 py-1.5 bg-surface-container-lowest text-outline hover:text-neutral-900 border border-neutral-200 rounded-md text-xs font-medium transition-colors">Disclosure</button>
+<button class="px-3 py-1.5 bg-surface-container-lowest text-outline hover:text-neutral-900 border border-neutral-200 rounded-md text-xs font-medium transition-colors">Posting</button>
+<button class="px-3 py-1.5 bg-surface-container-lowest text-outline hover:text-neutral-900 border border-neutral-200 rounded-md text-xs font-medium transition-colors">Scoring</button>
+<button class="px-3 py-1.5 bg-surface-container-lowest text-outline hover:text-neutral-900 border border-neutral-200 rounded-md text-xs font-medium transition-colors">Override</button>
+</div>
+</div>
+<!-- Audit Timeline Container -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm relative pt-4 pb-6 px-6">
+<!-- Vertical Timeline Line -->
+<div class="absolute left-10 top-8 bottom-8 w-px bg-neutral-200 z-0"></div>
+<div class="space-y-8 relative z-10">
+<!-- Event 1: Post Published (Disclosure/Green) -->
+<div class="flex gap-6 group">
+<!-- Timeline Node -->
+<div class="w-8 h-8 rounded-full bg-success/10 border border-success/20 flex items-center justify-center shrink-0 mt-1 relative z-10">
+<span class="material-symbols-outlined text-[16px] text-success" data-icon="check_circle">check_circle</span>
+</div>
+<!-- Event Content -->
+<div class="flex-1 space-y-3">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-success/10 text-success">Posting</span>
+<span class="text-xs font-medium text-neutral-900">Post Published to LinkedIn</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-outline">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 2 mins ago (10:45 AM, Oct 24)</span>
+<span>•</span>
+<span class="flex items-center gap-1 font-medium text-accent-ai bg-accent-ai/10 px-1.5 py-0.5 rounded"><span class="material-symbols-outlined text-[12px]" data-icon="auto_awesome">auto_awesome</span> Riya AI</span>
+<span>•</span>
+<span>Entity: Job Post (JP-1042)</span>
+</div>
+</div>
+<span class="text-[10px] text-outline font-mono">EVT-9901A</span>
+</div>
+<!-- Disclosure Hash Block -->
+<div class="bg-surface-container-low border border-neutral-200 rounded-lg p-3">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-neutral-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="verified_user">verified_user</span>
+                                            Content Verification Hash (SHA-256)
+                                        </span>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<div class="font-mono text-xs text-neutral-600 bg-surface-container-lowest border border-neutral-200 p-2 rounded truncate">
+                                        e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+                                    </div>
+</div>
+</div>
+</div>
+<!-- Event 2: Score Overridden (Warning/Amber) -->
+<div class="flex gap-6 group">
+<!-- Timeline Node -->
+<div class="w-8 h-8 rounded-full bg-warning/10 border border-warning/20 flex items-center justify-center shrink-0 mt-1 relative z-10">
+<span class="material-symbols-outlined text-[16px] text-warning" data-icon="edit_note">edit_note</span>
+</div>
+<!-- Event Content -->
+<div class="flex-1 space-y-3">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-warning/10 text-warning">Override</span>
+<span class="text-xs font-medium text-neutral-900">AI Score Overridden Manually</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-outline">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 15 mins ago (10:32 AM, Oct 24)</span>
+<span>•</span>
+<span class="flex items-center gap-1 font-medium text-neutral-700"><span class="material-symbols-outlined text-[14px]" data-icon="person">person</span> Sarah Jenkins (Recruiter)</span>
+<span>•</span>
+<span>Entity: Candidate (C-4091)</span>
+</div>
+</div>
+<span class="text-[10px] text-outline font-mono">EVT-9900B</span>
+</div>
+<div class="bg-warning/5 border border-warning/20 rounded-lg p-3 text-sm text-neutral-800">
+<span class="font-semibold text-warning text-xs block mb-1">Justification Provided:</span>
+                                    "Candidate lacks specific framework experience required by the hiring manager, despite strong general JS skills noted by AI. Adjusted score from 85 to 65 to reflect immediate project needs."
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

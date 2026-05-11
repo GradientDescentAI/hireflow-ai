@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HireFlow AI - Applications List</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "neutral-900": "#111928",
+                        "on-tertiary-container": "#ffd4c5",
+                        "on-background": "#191b23",
+                        "on-primary-fixed-variant": "#003dab",
+                        "success": "#057a55",
+                        "inverse-on-surface": "#f0f0fb",
+                        "background": "#faf8ff",
+                        "accent-ai": "#6c2bd9",
+                        "tertiary-container": "#ad3b00",
+                        "primary": "#003fb1",
+                        "secondary-fixed": "#eaddff",
+                        "surface-container": "#ededf8",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-bright": "#faf8ff",
+                        "surface-dim": "#d9d9e4",
+                        "on-surface-variant": "#434654",
+                        "inverse-surface": "#2e3039",
+                        "inverse-primary": "#b5c4ff",
+                        "primary-fixed": "#dbe1ff",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "primary-container": "#1a56db",
+                        "secondary": "#6f30dc",
+                        "outline": "#737686",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#fffbff",
+                        "surface-container-low": "#f3f3fe",
+                        "secondary-container": "#894ff7",
+                        "on-secondary-fixed-variant": "#5900c7",
+                        "on-secondary-fixed": "#25005a",
+                        "surface-variant": "#e2e1ed",
+                        "on-primary-container": "#d4dcff",
+                        "outline-variant": "#c3c5d7",
+                        "on-tertiary-fixed": "#380d00",
+                        "warning": "#c27803",
+                        "neutral-50": "#f9fafb",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e2e1ed",
+                        "neutral-700": "#374151",
+                        "secondary-fixed-dim": "#d2bcff",
+                        "danger": "#c81e1e",
+                        "surface-container-high": "#e7e7f3",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#1353d8",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "neutral-200": "#e5e7eb",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcf",
+                        "tertiary": "#852b00",
+                        "surface": "#faf8ff",
+                        "on-surface": "#191b23",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#00174d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-collapsed": "64px",
+                        "gutter": "1rem",
+                        "max-content-width": "80rem",
+                        "container-padding": "1.5rem",
+                        "sidebar-width": "240px",
+                        "card-padding": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-muted": ["Inter"],
+                        "label-xs": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-muted": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "label-xs": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-neutral-50 text-on-surface flex min-h-screen">
+<!-- Fixed Sidebar Nav -->
+<nav class="w-sidebar-width shrink-0 border-r border-neutral-200 bg-surface-container-lowest hidden md:flex flex-col h-screen sticky top-0">
+<div class="h-16 flex items-center px-6 border-b border-neutral-200">
+<div class="size-6 text-primary mr-3 flex items-center justify-center">
+<span class="material-symbols-outlined icon-fill">square</span>
+</div>
+<span class="font-bold text-lg text-on-surface">HireFlow AI</span>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container/10 text-primary-container rounded-lg font-medium text-sm" href="#">
+<span class="material-symbols-outlined icon-fill">work</span>
+<span>Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-medium text-sm">Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium text-sm">Settings</span>
+</a>
+</div>
+<div class="p-4 border-t border-neutral-200">
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary py-2 px-4 rounded-lg font-medium text-sm hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                New Job
+            </button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- Top App Bar -->
+<header class="h-16 border-b border-neutral-200 bg-surface-container-lowest flex items-center justify-between px-6 sticky top-0 z-10">
+<div class="flex items-center">
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden mr-4 text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-primary-container outline-none" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-danger rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<div class="size-8 rounded-full bg-primary-fixed-dim text-primary flex items-center justify-center font-bold text-sm">
+                    JD
+                </div>
+</div>
+</header>
+<!-- Content Container -->
+<div class="p-6 max-w-max-content-width mx-auto w-full flex-1 flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<nav class="flex items-center text-sm text-on-surface-variant space-x-2">
+<a class="hover:text-primary-container transition-colors" href="#">Jobs</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary-container transition-colors truncate max-w-[200px]" href="#">Senior Frontend Developer</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface font-medium">Applications</span>
+</nav>
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-on-surface flex items-center gap-3">
+                        Senior Frontend Developer
+                        <span class="text-sm font-medium bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full mt-1">142 Apps</span>
+</h1>
+<p class="text-body-sm text-on-surface-variant mt-1">ID: ACME-PM-2026-12</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 bg-surface-container-lowest border border-neutral-200 text-neutral-700 py-2 px-4 rounded-lg font-medium text-sm hover:bg-neutral-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]">share</span>
+                        Share Link
+                    </button>
+<button class="flex items-center gap-2 bg-accent-ai text-white py-2 px-4 rounded-lg font-medium text-sm hover:bg-secondary transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+                        Trigger Scoring
+                    </button>
+</div>
+</div>
+<!-- Collection Email Banner -->
+<div class="bg-primary-fixed/30 border border-primary-fixed-dim rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary-container/10 text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<div>
+<p class="text-sm font-medium text-on-surface">Collection Email</p>
+<p class="text-body-muted text-on-surface-variant">Forward resumes to this address to automatically parse them into this job.</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-lowest border border-neutral-200 rounded px-3 py-1.5">
+<span class="text-sm font-mono text-on-surface">apply-acme-pm-2026-12@hireflow.in</span>
+<button class="text-outline hover:text-primary-container transition-colors flex items-center">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Filters & Table Card -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm flex flex-col overflow-hidden">
+<!-- Filters Bar -->
+<div class="p-4 border-b border-neutral-200 bg-neutral-50 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex gap-4 items-center">
+<!-- Channel Filter -->
+<div class="flex items-center gap-2">
+<label class="text-label-xs text-on-surface-variant uppercase tracking-wider">Channel</label>
+<select class="text-sm border-neutral-200 rounded-lg py-1.5 pl-3 pr-8 bg-surface-container-lowest focus:ring-primary-container focus:border-primary-container">
+<option>All Channels</option>
+<option>LinkedIn</option>
+<option>Email</option>
+<option>WhatsApp</option>
+</select>
+</div>
+<!-- Status Filter -->
+<div class="flex items-center gap-2">
+<label class="text-label-xs text-on-surface-variant uppercase tracking-wider">Status</label>
+<select class="text-sm border-neutral-200 rounded-lg py-1.5 pl-3 pr-8 bg-surface-container-lowest focus:ring-primary-container focus:border-primary-container">
+<option>All Statuses</option>
+<option>Received</option>
+<option>Parsed</option>
+<option>Flagged</option>
+<option>Failed</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-2 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">sort</span>
+<span>Sort by:</span>
+<select class="border-none bg-transparent font-medium text-on-surface p-0 py-1 pr-6 focus:ring-0 cursor-pointer">
+<option>Newest First</option>
+<option>Oldest First</option>
+<option>Confidence Score</option>
+</select>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm whitespace-nowrap">
+<thead class="text-label-xs text-on-surface-variant uppercase bg-neutral-50 border-b border-neutral-200">
+<tr>
+<th class="px-6 py-3 font-medium">Candidate</th>
+<th class="px-6 py-3 font-medium">Source</th>
+<th class="px-6 py-3 font-medium">Applied</th>
+<th class="px-6 py-3 font-medium">Status</th>
+<th class="px-6 py-3 font-medium">AI Parse Confidence</th>
+<th class="px-6 py-3 font-medium text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-neutral-200 bg-surface-container-lowest">
+<!-- Row 1: Parsed High -->
+<tr class="hover:bg-neutral-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Rahul Sharma</span>
+<span class="text-body-muted text-on-surface-variant">rahul.s@example.com</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary-container">work</span>
+<span>LinkedIn</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">2 hours ago</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-success">
+                                        Parsed
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="size-2 rounded-full bg-success"></div>
+<div class="size-2 rounded-full bg-success"></div>
+<div class="size-2 rounded-full bg-success"></div>
+</div>
+<span class="text-xs text-on-surface-variant">High</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary-container font-medium hover:underline text-sm" href="#">View CV</a>
+</td>
+</tr>
+<!-- Row 2: Flagged Low -->
+<tr class="hover:bg-neutral-50 transition-colors bg-error-container/20">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface flex items-center gap-2">
+                                            Priya Patel
+                                            <span class="material-symbols-outlined text-[16px] text-danger" title="Review Needed">flag</span>
+</span>
+<span class="text-body-muted text-on-surface-variant">p.patel92@gmail.com</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-success">chat</span>
+<span>WhatsApp</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">5 hours ago</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-warning">
+                                        Flagged
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="size-2 rounded-full bg-danger"></div>
+<div class="size-2 rounded-full bg-neutral-200"></div>
+<div class="size-2 rounded-full bg-neutral-200"></div>
+</div>
+<span class="text-xs text-danger font-medium">Low - Missing Info</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary-container font-medium hover:underline text-sm" href="#">Review</a>
+</td>
+</tr>
+<!-- Row 3: Received Pending -->
+<tr class="hover:bg-neutral-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Amit Kumar</span>
+<span class="text-body-muted text-on-surface-variant">amit.k.dev@outlook.com</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">mail</span>
+<span>Email</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">1 day ago</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface-variant text-on-surface-variant">
+                                        Received
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-on-surface-variant text-xs italic">
+<span class="material-symbols-outlined text-[16px] animate-spin">sync</span>
+                                        Processing...
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary-container font-medium hover:underline text-sm" href="#">View CV</a>
+</td>
+</tr>
+<!-- Row 4: Parsed Med -->
+<tr class="hover:bg-neutral-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Sneha Reddy</span>
+<span class="text-body-muted text-on-surface-variant">sneha.r88@company.in</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary-container">work</span>
+<span>LinkedIn</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">1 day ago</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-success">
+                                        Parsed
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="size-2 rounded-full bg-warning"></div>
+<div class="size-2 rounded-full bg-warning"></div>
+<div class="size-2 rounded-full bg-neutral-200"></div>
+</div>
+<span class="text-xs text-on-surface-variant">Medium</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<a class="text-primary-container font-medium hover:underline text-sm" href="#">View CV</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="p-4 border-t border-neutral-200 flex items-center justify-between text-sm text-on-surface-variant bg-surface-container-lowest">
+<span>Showing 1 to 10 of 142 entries</span>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 rounded hover:bg-neutral-100 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded bg-primary-container text-on-primary font-medium">1</button>
+<button class="px-3 py-1 rounded hover:bg-neutral-100 font-medium">2</button>
+<button class="px-3 py-1 rounded hover:bg-neutral-100 font-medium">3</button>
+<span class="px-2">...</span>
+<button class="px-3 py-1 rounded hover:bg-neutral-100 font-medium">15</button>
+<button class="px-2 py-1 rounded hover:bg-neutral-100">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+langgraph
+langchain-core
+langchain-google-genai
+pydantic
+sqlalchemy
+pypdf
+python-multipart
+playwright
+nest_asyncio
+python-dotenv

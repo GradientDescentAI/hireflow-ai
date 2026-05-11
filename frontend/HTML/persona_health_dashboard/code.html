@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HireFlow - Persona Health</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#faf8ff",
+                    "on-error-container": "#93000a",
+                    "outline-variant": "#c3c5d7",
+                    "danger": "#c81e1e",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#d4dcff",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#191b23",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#ededf8",
+                    "secondary-fixed-dim": "#d2bcff",
+                    "on-surface-variant": "#434654",
+                    "tertiary-container": "#ad3b00",
+                    "warning": "#c27803",
+                    "surface-dim": "#d9d9e4",
+                    "tertiary": "#852b00",
+                    "on-secondary-fixed": "#25005a",
+                    "surface-tint": "#1353d8",
+                    "primary-fixed": "#dbe1ff",
+                    "surface-container-highest": "#e2e1ed",
+                    "on-tertiary-fixed-variant": "#802a00",
+                    "on-tertiary-fixed": "#380d00",
+                    "surface": "#faf8ff",
+                    "neutral-200": "#e5e7eb",
+                    "neutral-900": "#111928",
+                    "inverse-primary": "#b5c4ff",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#faf8ff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#f0f0fb",
+                    "neutral-50": "#f9fafb",
+                    "neutral-700": "#374151",
+                    "tertiary-fixed": "#ffdbcf",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f3f3fe",
+                    "secondary-container": "#894ff7",
+                    "success": "#057a55",
+                    "primary-container": "#1a56db",
+                    "on-background": "#191b23",
+                    "outline": "#737686",
+                    "on-secondary-fixed-variant": "#5900c7",
+                    "on-secondary-container": "#fffbff",
+                    "on-tertiary-container": "#ffd4c5",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "secondary-fixed": "#eaddff",
+                    "inverse-surface": "#2e3039",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e7e7f3",
+                    "on-primary-fixed-variant": "#003dab",
+                    "secondary": "#6f30dc",
+                    "primary": "#003fb1",
+                    "surface-variant": "#e2e1ed",
+                    "on-primary-fixed": "#00174d",
+                    "accent-ai": "#6c2bd9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "max-content-width": "80rem",
+                    "sidebar-collapsed": "64px",
+                    "sidebar-width": "240px",
+                    "container-padding": "1.5rem",
+                    "gutter": "1rem",
+                    "card-padding": "1.5rem"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter", "sans-serif"],
+                    "body-muted": ["Inter", "sans-serif"],
+                    "label-xs": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "headline-lg": ["Inter", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-neutral-50 text-on-surface flex h-screen overflow-hidden">
+<!-- Shared Component: SideNavBar (Extracted Inner Sidebar) -->
+<div class="flex h-full w-sidebar-width flex-col justify-between bg-surface-container border-r border-neutral-200 p-4 flex-shrink-0 z-10">
+<div class="flex flex-col gap-4">
+<div class="flex gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Abstract geometric placeholder image representing a system admin user avatar." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAitUNK1dXR-7V6X7ghkrdGzZQcEIpHZoK_TplnkIp9OFOVj4IT-RSFSBHO6k-XjcwHsctsVLjTLr1dAwHQblHvS3CyQQ9kgb_Ay0dSJOQ2Sgr-gpn-FCZ_PbzasJ7RTMoIbsvUtGcZaU70H-6dG7tKXMiVGpss9QmF1gziTLrmz6GuEhciqpHMYvhdSIYyizBA-XHCDIufNPgx4_IG0_wsUxZPPsowAa0TkEcF1YzRLhxn3eevdNanECrpuRulfUuJN8hu8_gtx_o");'></div>
+<div class="flex flex-col">
+<h1 class="text-on-surface text-base font-medium leading-normal">HireFlow Admin</h1>
+<p class="text-on-surface-variant text-sm font-normal leading-normal">System Administrator</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 mt-4">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="text-on-surface" data-icon="Gauge" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M207.06,80.67A111.24,111.24,0,0,0,128,48h-.4C66.07,48.21,16,99,16,161.13V184a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V160A111.25,111.25,0,0,0,207.06,80.67ZM224,184H119.71l54.76-75.3a8,8,0,0,0-12.94-9.42L99.92,184H32V161.13c0-3.08.15-6.12.43-9.13H56a8,8,0,0,0,0-16H35.27c10.32-38.86,44-68.24,84.73-71.66V88a8,8,0,0,0,16,0V64.33A96.14,96.14,0,0,1,221,136H200a8,8,0,0,0,0,16h23.67c.21,2.65.33,5.31.33,8Z"></path></svg>
+</div>
+<p class="text-on-surface text-sm font-medium leading-normal">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-container-highest cursor-pointer">
+<div class="text-primary" data-icon="Heart" data-size="24px" data-weight="fill">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M240,94c0,70-103.79,126.66-108.21,129a8,8,0,0,1-7.58,0C119.79,220.66,16,164,16,94A62.07,62.07,0,0,1,78,32c20.65,0,38.73,8.88,50,23.89C139.27,40.88,157.35,32,178,32A62.07,62.07,0,0,1,240,94Z"></path></svg>
+</div>
+<p class="text-primary font-medium text-sm leading-normal">Persona Health</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="text-on-surface" data-icon="Warning" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"></path></svg>
+</div>
+<p class="text-on-surface text-sm font-medium leading-normal">Failover Logs</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="text-on-surface" data-icon="Gear" data-size="24px" data-weight="regular">
+<svg fill="currentColor" height="24px" viewbox="0 0 256 256" width="24px" xmlns="http://www.w3.org/2000/svg"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"></path></svg>
+</div>
+<p class="text-on-surface text-sm font-medium leading-normal">Settings</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 h-full overflow-y-auto">
+<div class="max-w-7xl mx-auto p-8 flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-wrap justify-between items-end gap-4 border-b border-neutral-200 pb-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-on-surface text-headline-lg">Persona Health</h2>
+<div class="flex items-center gap-2">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-success"></span>
+</span>
+<p class="text-on-surface-variant text-body-sm font-medium">System Status: Online</p>
+</div>
+</div>
+<button class="flex items-center gap-2 border border-neutral-200 bg-surface hover:bg-neutral-50 text-neutral-700 rounded-lg px-4 py-2 text-label-xs shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+<span>Refresh Data</span>
+</button>
+</div>
+<!-- KPI Summary Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface border border-neutral-200 rounded-xl p-6 shadow-sm flex flex-col gap-2">
+<p class="text-on-surface-variant text-body-sm font-medium">Active Personas</p>
+<p class="text-on-surface text-3xl font-bold">12</p>
+</div>
+<div class="bg-surface border border-neutral-200 rounded-xl p-6 shadow-sm flex flex-col gap-2">
+<p class="text-on-surface-variant text-body-sm font-medium">Total Posts Today</p>
+<p class="text-on-surface text-3xl font-bold">342</p>
+</div>
+<div class="bg-surface border border-neutral-200 rounded-xl p-6 shadow-sm flex flex-col gap-2">
+<p class="text-on-surface-variant text-body-sm font-medium">Avg Health Score</p>
+<p class="text-success text-3xl font-bold">94%</p>
+</div>
+<div class="bg-surface border border-neutral-200 rounded-xl p-6 shadow-sm flex flex-col gap-2">
+<p class="text-on-surface-variant text-body-sm font-medium">Pending Failovers</p>
+<p class="text-warning text-3xl font-bold">1</p>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+<!-- Persona Cards Column (Left) -->
+<div class="xl:col-span-8 flex flex-col gap-6">
+<h3 class="text-on-surface text-headline-md font-semibold">Persona Accounts</h3>
+<!-- Card 1: Riya (Healthy) -->
+<div class="bg-surface border border-neutral-200 rounded-xl p-6 shadow-sm flex flex-col gap-6 relative overflow-hidden">
+<!-- Header -->
+<div class="flex items-start justify-between">
+<div class="flex gap-4 items-center">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-16 w-16 border-2 border-neutral-50 shadow-sm" data-alt="A professional corporate headshot of a friendly Indian woman in her late 20s. She is wearing a modern, neatly pressed light blue blazer over a white blouse. The lighting is bright and even, creating a clean, modern aesthetic suitable for a tech company's AI persona. The background is a crisp, solid white." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDv_LjZO6TydKtYFcq10_r6RplcdvhmhIx-n9eOvtq75TRzt26hTf94ABSOfdVxZAktLwJGbGjsqv5_nNKJf7vmutbQtwaGt5en77YojbvpN-isZc00wEqQuYxDj8LvYSiZRClckmNxLHgxecQKSKHESbxphjVRlTWyRvKZwWX0VkSUBkTzxWaPerj4G2p7I56yxWhp6htfDnhwxO3VKsfqZZgOyQ2kflMWcqvt03LzYKOFYFLiNh_flzSfuSBX9lilV4pzJFZCjxk');"></div>
+<div>
+<h4 class="text-on-surface text-lg font-bold">Riya - North India</h4>
+<p class="text-on-surface-variant text-body-sm">@riya_recruits</p>
+</div>
+</div>
+<div class="bg-success/10 text-success px-3 py-1 rounded-full text-label-xs flex items-center gap-1 border border-success/20">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+                                Healthy
+                            </div>
+</div>
+<!-- Metrics & Status Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+<!-- Left: Engagement -->
+<div class="flex flex-col gap-3">
+<p class="text-label-xs text-on-surface-variant uppercase tracking-wider">Engagement Metrics</p>
+<div>
+<div class="flex justify-between text-body-sm mb-1">
+<span class="text-on-surface">Posts Today</span>
+<span class="text-on-surface font-medium">42 / 50</span>
+</div>
+<div class="w-full bg-neutral-200 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 84%"></div>
+</div>
+</div>
+<p class="text-body-muted text-on-surface-variant">Last post: 15 mins ago</p>
+</div>
+<!-- Right: Systems -->
+<div class="flex flex-col gap-2">
+<p class="text-label-xs text-on-surface-variant uppercase tracking-wider">System Status</p>
+<ul class="flex flex-col gap-2 text-body-sm">
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="work">work</span> LinkedIn</span>
+<span class="text-success font-medium">Connected</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="chat">chat</span> WhatsApp</span>
+<span class="text-success font-medium">Active</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="api">api</span> API Connectivity</span>
+<span class="text-success font-medium">Stable</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-wrap gap-3 pt-2 border-t border-neutral-200">
+<button class="bg-primary hover:bg-primary/90 text-on-primary px-4 py-2 rounded-lg text-label-xs font-medium transition-colors">Run Health Check</button>
+<button class="border border-neutral-200 bg-surface hover:bg-neutral-50 text-neutral-700 px-4 py-2 rounded-lg text-label-xs font-medium transition-colors">Rotate Credentials</button>
+<button class="border border-error-container bg-surface hover:bg-error-container/20 text-error px-4 py-2 rounded-lg text-label-xs font-medium transition-colors ml-auto">Initiate Failover</button>
+</div>
+</div>
+<!-- Card 2: Anjali (Warning) -->
+<div class="bg-surface border border-warning/30 rounded-xl p-6 shadow-sm flex flex-col gap-6 relative overflow-hidden ring-1 ring-warning/20">
+<!-- Header -->
+<div class="flex items-start justify-between">
+<div class="flex gap-4 items-center">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-16 w-16 border-2 border-neutral-50 shadow-sm" data-alt="A professional corporate headshot of an approachable Indian woman from South India in her early 30s. She is dressed in smart casual business attire, featuring a subtly patterned silk top in warm tones. The lighting is soft and flattering, emphasizing a trustworthy and efficient demeanor. The background is a neutral light gray." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBvoedvTCmCIK-DyqpSyT9O9yb_jv9L1h_y9YNWZuQLy_L15oPCRI1s9jeOknJ_O2DLYDjxV5OvCKCzx9YJN6DeTL3XdRTLlkSnHTheVhIoM8Dx4gW-AysEekYgGsG8IkPxEZu9JxcX2sNXM-Od7hDyQfpeRCace9LIfipNfEFYXINlNi4FLZQqhtYT1elhBBAtsliJT-lNgKpK_hAmB1CSZTFbQPlXooOy8LisJY1AnsptWnBCE20T0vPZAhK4TwjlI53q5gT3EdU');"></div>
+<div>
+<h4 class="text-on-surface text-lg font-bold">Anjali - South India</h4>
+<p class="text-on-surface-variant text-body-sm">@anjali_south</p>
+</div>
+</div>
+<div class="bg-warning/10 text-warning px-3 py-1 rounded-full text-label-xs flex items-center gap-1 border border-warning/20">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning">warning</span>
+                                Action Required
+                            </div>
+</div>
+<!-- Metrics & Status Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-warning/5 p-4 rounded-lg border border-warning/20">
+<!-- Left: Engagement -->
+<div class="flex flex-col gap-3">
+<p class="text-label-xs text-on-surface-variant uppercase tracking-wider">Engagement Metrics</p>
+<div>
+<div class="flex justify-between text-body-sm mb-1">
+<span class="text-on-surface">Posts Today</span>
+<span class="text-on-surface font-medium">48 / 50</span>
+</div>
+<div class="w-full bg-neutral-200 rounded-full h-1.5">
+<div class="bg-warning h-1.5 rounded-full" style="width: 96%"></div>
+</div>
+</div>
+<p class="text-body-muted text-warning">Approaching rate limit</p>
+</div>
+<!-- Right: Systems -->
+<div class="flex flex-col gap-2">
+<p class="text-label-xs text-on-surface-variant uppercase tracking-wider">System Status</p>
+<ul class="flex flex-col gap-2 text-body-sm">
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="work">work</span> LinkedIn</span>
+<span class="text-warning font-medium flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="error">error</span> Rate Limited</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="chat">chat</span> WhatsApp</span>
+<span class="text-success font-medium">Active</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-wrap gap-3 pt-2 border-t border-neutral-200">
+<button class="bg-primary hover:bg-primary/90 text-on-primary px-4 py-2 rounded-lg text-label-xs font-medium transition-colors">Run Health Check</button>
+<button class="border border-neutral-200 bg-surface hover:bg-neutral-50 text-neutral-700 px-4 py-2 rounded-lg text-label-xs font-medium transition-colors">Acknowledge Alert</button>
+<button class="border border-error-container bg-surface hover:bg-error-container/20 text-error px-4 py-2 rounded-lg text-label-xs font-medium transition-colors ml-auto">Initiate Failover</button>
+</div>
+</div>
+</div>
+<!-- Timeline Column (Right) -->
+<div class="xl:col-span-4">
+<div class="bg-surface border border-neutral-200 rounded-xl shadow-sm p-6 sticky top-8">
+<div class="flex items-center gap-2 mb-6 border-b border-neutral-200 pb-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="history">history</span>
+<h3 class="text-on-surface text-headline-md font-semibold">Recent Health Events</h3>
+</div>
+<div class="relative border-l-2 border-neutral-200 ml-3 space-y-6">
+<!-- Event 1 (Warning) -->
+<div class="relative pl-6">
+<div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-warning border-2 border-surface"></div>
+<p class="text-label-xs text-on-surface-variant mb-1">10:42 AM Today</p>
+<p class="text-body-sm text-on-surface font-medium">LinkedIn Rate Limit Warning</p>
+<p class="text-body-muted text-on-surface-variant mt-1">Persona @anjali_south has reached 96% of daily connection request limits. Recommend throttling.</p>
+</div>
+<!-- Event 2 (Info) -->
+<div class="relative pl-6">
+<div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-primary border-2 border-surface"></div>
+<p class="text-label-xs text-on-surface-variant mb-1">08:15 AM Today</p>
+<p class="text-body-sm text-on-surface font-medium">Routine Rotation Completed</p>
+<p class="text-body-muted text-on-surface-variant mt-1">Credentials successfully rotated for @riya_recruits. Systems nominal.</p>
+</div>
+<!-- Event 3 (Error) -->
+<div class="relative pl-6">
+<div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-error border-2 border-surface"></div>
+<p class="text-label-xs text-on-surface-variant mb-1">Yesterday, 4:30 PM</p>
+<p class="text-body-sm text-on-surface font-medium">WhatsApp Session Disconnect</p>
+<p class="text-body-muted text-on-surface-variant mt-1">Temporary drop in WhatsApp API connectivity for @vikram_west. Auto-recovered after 5 mins.</p>
+</div>
+</div>
+<button class="w-full mt-8 border border-neutral-200 text-neutral-700 py-2 rounded-lg text-label-xs font-medium hover:bg-neutral-50 transition-colors">
+                            View Full Logs
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

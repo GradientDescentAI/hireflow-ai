@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shortlist Review - Senior Frontend Developer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#d2bcff",
+                    "danger": "#c81e1e",
+                    "surface-container-low": "#f3f3fe",
+                    "on-error-container": "#93000a",
+                    "background": "#faf8ff",
+                    "surface-container-highest": "#e2e1ed",
+                    "outline-variant": "#c3c5d7",
+                    "inverse-primary": "#b5c4ff",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e2e1ed",
+                    "tertiary": "#852b00",
+                    "tertiary-fixed": "#ffdbcf",
+                    "accent-ai": "#6c2bd9",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "on-surface-variant": "#434654",
+                    "inverse-on-surface": "#f0f0fb",
+                    "surface-container-high": "#e7e7f3",
+                    "on-primary-fixed": "#00174d",
+                    "surface-tint": "#1353d8",
+                    "primary": "#003fb1",
+                    "success": "#057a55",
+                    "on-tertiary-fixed": "#380d00",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#003dab",
+                    "surface-bright": "#faf8ff",
+                    "tertiary-container": "#ad3b00",
+                    "neutral-50": "#f9fafb",
+                    "surface": "#faf8ff",
+                    "on-tertiary-container": "#ffd4c5",
+                    "on-background": "#191b23",
+                    "on-surface": "#191b23",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "outline": "#737686",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#5900c7",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#2e3039",
+                    "warning": "#c27803",
+                    "neutral-900": "#111928",
+                    "primary-container": "#1a56db",
+                    "primary-fixed": "#dbe1ff",
+                    "on-tertiary-fixed-variant": "#802a00",
+                    "surface-dim": "#d9d9e4",
+                    "neutral-200": "#e5e7eb",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#eaddff",
+                    "on-secondary-fixed": "#25005a",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#894ff7",
+                    "on-primary-container": "#d4dcff",
+                    "secondary": "#6f30dc",
+                    "error-container": "#ffdad6",
+                    "neutral-700": "#374151",
+                    "surface-container": "#ededf8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar-width": "240px",
+                    "max-content-width": "80rem",
+                    "gutter": "1rem",
+                    "container-padding": "1.5rem",
+                    "sidebar-collapsed": "64px",
+                    "card-padding": "1.5rem"
+            },
+            "fontFamily": {
+                    "body-muted": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "label-xs": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "body-muted": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-xs": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- Top Nav Bar (Shared Component for non-focused view) -->
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 lg:px-8 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-max-content-width flex-1 w-full">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-neutral-200 px-4 py-3 bg-surface-container-lowest rounded-t-xl mb-4 shadow-sm">
+<div class="flex items-center gap-4 text-on-surface">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back" data-weight="regular">arrow_back</span>
+</button>
+<h2 class="text-on-surface text-headline-md font-semibold leading-tight tracking-[-0.015em]">Shortlist Review</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<div class="flex gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-on-primary text-sm font-semibold leading-normal tracking-[0.015em] transition-colors hover:bg-primary-container hover:text-on-primary-container border border-primary">
+<span class="truncate">Export</span>
+</button>
+<button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-dim gap-2 text-sm font-semibold leading-normal tracking-[0.015em] min-w-0 px-3 transition-colors border border-transparent">
+<span class="material-symbols-outlined text-[20px]" data-icon="share" data-weight="regular">share</span>
+</button>
+<button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-dim gap-2 text-sm font-semibold leading-normal tracking-[0.015em] min-w-0 px-3 transition-colors border border-transparent">
+<span class="material-symbols-outlined text-[20px]" data-icon="download" data-weight="regular">download</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Bias Audit Banner -->
+<div class="mb-6 flex items-start gap-3 bg-warning/10 border border-warning/20 p-4 rounded-lg">
+<span class="material-symbols-outlined text-warning mt-0.5" data-icon="warning" data-weight="fill">warning</span>
+<div>
+<h4 class="text-warning font-semibold text-sm">Bias Audit Alert</h4>
+<p class="text-on-surface-variant text-sm mt-1">Our analysis indicates a potential demographic disparity in this shortlist. Ensure selection criteria are applied consistently.</p>
+</div>
+</div>
+<div class="flex flex-wrap justify-between gap-3 px-4 pb-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-on-surface text-headline-lg font-bold leading-tight">Senior Frontend Developer</h1>
+<div class="flex items-center gap-2">
+<span class="bg-accent-ai/10 text-accent-ai px-2 py-0.5 rounded flex items-center gap-1 text-xs font-medium">
+<span class="material-symbols-outlined text-[14px]" data-icon="auto_awesome" data-weight="fill">auto_awesome</span>
+                                    Generated by Riya AI
+                                </span>
+<span class="text-on-surface-variant text-sm">8 Candidates Shortlisted</span>
+</div>
+</div>
+</div>
+<!-- Main Two-Panel Layout -->
+<div class="flex flex-col lg:flex-row gap-6 px-4">
+<!-- Left Panel: Ranked List -->
+<div class="w-full lg:w-[40%] flex flex-col gap-4">
+<!-- Candidate Card 1 (Selected) -->
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-surface-container-low border-2 border-primary p-4 shadow-sm relative cursor-pointer hover:shadow-md transition-shadow">
+<div class="absolute -top-3 -left-3 bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm border border-surface-container-lowest">#1</div>
+<div class="flex flex-[2_2_0px] flex-col gap-3 ml-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface text-base font-bold leading-tight">Arjun Mehta</p>
+<p class="text-on-surface-variant text-sm font-normal">React, TypeScript, Next.js</p>
+</div>
+<!-- Donut Chart Miniature -->
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-neutral-200" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle>
+<circle class="stroke-success" cx="18" cy="18" fill="none" r="16" stroke-dasharray="92, 100" stroke-dashoffset="0" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-xs font-bold text-success">92</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded p-2 text-sm text-on-surface-variant border border-neutral-200 line-clamp-2">
+                                        Exceptional architectural skills. Strong fit for the current tech stack.
+                                    </div>
+</div>
+</div>
+<!-- Candidate Card 2 -->
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-surface-container-lowest border border-neutral-200 p-4 hover:shadow-sm cursor-pointer transition-shadow relative">
+<div class="absolute -top-3 -left-3 bg-surface-container-highest text-on-surface-variant w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm border border-surface-container-lowest">#2</div>
+<div class="flex flex-[2_2_0px] flex-col gap-3 ml-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface text-base font-bold leading-tight">Priya Iyer</p>
+<p class="text-on-surface-variant text-sm font-normal">Vue, JavaScript, UI/UX</p>
+</div>
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-neutral-200" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle>
+<circle class="stroke-success" cx="18" cy="18" fill="none" r="16" stroke-dasharray="88, 100" stroke-dashoffset="0" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-xs font-bold text-success">88</span>
+</div>
+</div>
+<div class="bg-surface-container rounded p-2 text-sm text-on-surface-variant border border-neutral-200/50 line-clamp-2">
+                                        Great eye for design and component reusability. Solid track record.
+                                    </div>
+</div>
+</div>
+<!-- Candidate Card 3 -->
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-surface-container-lowest border border-neutral-200 p-4 hover:shadow-sm cursor-pointer transition-shadow relative">
+<div class="absolute -top-3 -left-3 bg-surface-container-highest text-on-surface-variant w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm border border-surface-container-lowest">#3</div>
+<div class="flex flex-[2_2_0px] flex-col gap-3 ml-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface text-base font-bold leading-tight">Rohan Das</p>
+<p class="text-on-surface-variant text-sm font-normal">Angular, RxJS, Enterprise</p>
+</div>
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-neutral-200" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle>
+<circle class="stroke-warning" cx="18" cy="18" fill="none" r="16" stroke-dasharray="75, 100" stroke-dashoffset="0" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-xs font-bold text-warning">75</span>
+</div>
+</div>
+<div class="bg-surface-container rounded p-2 text-sm text-on-surface-variant border border-neutral-200/50 line-clamp-2">
+                                        Strong enterprise background, though primarily Angular focused.
+                                    </div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Detailed Profile -->
+<div class="w-full lg:w-[60%] flex flex-col bg-surface-container-lowest rounded-xl border border-neutral-200 shadow-sm overflow-hidden flex-1">
+<!-- Header -->
+<div class="p-6 border-b border-neutral-200 bg-neutral-50 flex justify-between items-start">
+<div>
+<h2 class="text-headline-lg font-bold text-on-surface mb-1">Arjun Mehta</h2>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant text-sm">7+ YOE • Bengaluru, KA</span>
+<span class="bg-surface-container-highest text-on-surface-variant text-xs px-2 py-0.5 rounded-full border border-outline-variant">Notice: 30 days</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex items-center gap-3">
+<div class="text-right">
+<div class="text-sm text-on-surface-variant uppercase tracking-wider font-semibold">Composite Score</div>
+</div>
+<div class="text-3xl font-bold text-success bg-success/10 px-3 py-1 rounded-lg border border-success/20">92%</div>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col gap-8 overflow-y-auto" style="max-height: calc(100vh - 250px);">
+<!-- Shortlist Justification (AI Box) -->
+<div class="bg-accent-ai/5 border border-accent-ai/20 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-accent-ai text-lg" data-icon="auto_awesome" data-weight="fill">auto_awesome</span>
+<h3 class="text-accent-ai font-semibold text-sm uppercase tracking-wide">Riya's Justification</h3>
+</div>
+<p class="text-on-surface text-sm leading-relaxed">
+                                        Arjun presents an exceptionally strong alignment with the Senior Frontend role. His extensive experience with React and TypeScript directly maps to our core stack requirements. Furthermore, his demonstrated history of optimizing web performance and leading migration projects suggests he can handle the complex refactoring goals slated for Q3.
+                                    </p>
+</div>
+<!-- Dimension Breakdown (Bar Chart) -->
+<div>
+<h3 class="text-headline-md font-semibold text-on-surface mb-4">Dimension Breakdown</h3>
+<div class="flex flex-col gap-3">
+<!-- Bar 1 -->
+<div class="flex items-center gap-4">
+<div class="w-24 text-sm text-on-surface-variant font-medium">Must-Haves</div>
+<div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-success" style="width: 100%;"></div>
+</div>
+<div class="w-8 text-right text-sm font-bold text-on-surface">100</div>
+</div>
+<!-- Bar 2 -->
+<div class="flex items-center gap-4">
+<div class="w-24 text-sm text-on-surface-variant font-medium">Experience</div>
+<div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-success" style="width: 90%;"></div>
+</div>
+<div class="w-8 text-right text-sm font-bold text-on-surface">90</div>
+</div>
+<!-- Bar 3 -->
+<div class="flex items-center gap-4">
+<div class="w-24 text-sm text-on-surface-variant font-medium">Skills</div>
+<div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-success" style="width: 95%;"></div>
+</div>
+<div class="w-8 text-right text-sm font-bold text-on-surface">95</div>
+</div>
+<!-- Bar 4 -->
+<div class="flex items-center gap-4">
+<div class="w-24 text-sm text-on-surface-variant font-medium">Nice-to-Haves</div>
+<div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-warning" style="width: 70%;"></div>
+</div>
+<div class="w-8 text-right text-sm font-bold text-on-surface">70</div>
+</div>
+<!-- Bar 5 -->
+<div class="flex items-center gap-4">
+<div class="w-24 text-sm text-on-surface-variant font-medium">Trajectory</div>
+<div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-success" style="width: 85%;"></div>
+</div>
+<div class="w-8 text-right text-sm font-bold text-on-surface">85</div>
+</div>
+</div>
+</div>
+<!-- Strengths & Risks -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-success/5 border border-success/20 rounded-xl p-4">
+<h3 class="text-success font-semibold flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle" data-weight="fill">check_circle</span>
+                                            Key Strengths
+                                        </h3>
+<ul class="text-sm text-on-surface space-y-2">
+<li class="flex items-start gap-2"><span class="text-success mt-0.5">•</span> Deep React/TS expertise</li>
+<li class="flex items-start gap-2"><span class="text-success mt-0.5">•</span> Proven leadership in complex migrations</li>
+<li class="flex items-start gap-2"><span class="text-success mt-0.5">•</span> Excellent system design fundamentals</li>
+</ul>
+</div>
+<div class="bg-warning/5 border border-warning/20 rounded-xl p-4">
+<h3 class="text-warning font-semibold flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-lg" data-icon="error" data-weight="fill">error</span>
+                                            Potential Risks
+                                        </h3>
+<ul class="text-sm text-on-surface space-y-2">
+<li class="flex items-start gap-2"><span class="text-warning mt-0.5">•</span> Limited exposure to backend Node.js (Nice-to-have)</li>
+<li class="flex items-start gap-2"><span class="text-warning mt-0.5">•</span> Expected compensation is at the top of budget band</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Actions -->
+<div class="mt-auto border-t border-neutral-200 bg-neutral-50 p-4 flex items-center justify-between">
+<div class="flex items-center gap-2 text-sm text-on-surface-variant">
+<span>Was this AI insight helpful?</span>
+<button class="hover:text-primary transition-colors p-1"><span class="material-symbols-outlined text-[20px]" data-icon="thumb_up" data-weight="regular">thumb_up</span></button>
+<button class="hover:text-danger transition-colors p-1"><span class="material-symbols-outlined text-[20px]" data-icon="thumb_down" data-weight="regular">thumb_down</span></button>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 rounded-lg border border-neutral-300 text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-colors">
+                                        Reject
+                                    </button>
+<button class="px-4 py-2 rounded-lg border border-neutral-300 text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-colors">
+                                        Hold
+                                    </button>
+<button class="px-6 py-2 rounded-lg bg-primary text-on-primary font-medium text-sm shadow-sm hover:bg-primary-container hover:text-on-primary-container transition-colors border border-primary">
+                                        Approve candidate
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

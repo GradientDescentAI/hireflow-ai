@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Public Shortlist View - HireFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "surface-container-low": "#f3f3fe",
+                  "secondary-container": "#894ff7",
+                  "surface-container-lowest": "#ffffff",
+                  "primary-fixed-dim": "#b5c4ff",
+                  "tertiary-fixed": "#ffdbcf",
+                  "on-secondary-fixed-variant": "#5900c7",
+                  "outline": "#737686",
+                  "on-background": "#191b23",
+                  "success": "#057a55",
+                  "primary-container": "#1a56db",
+                  "on-primary-fixed-variant": "#003dab",
+                  "surface-container-high": "#e7e7f3",
+                  "on-tertiary": "#ffffff",
+                  "inverse-surface": "#2e3039",
+                  "secondary-fixed": "#eaddff",
+                  "tertiary-fixed-dim": "#ffb59a",
+                  "on-tertiary-container": "#ffd4c5",
+                  "on-secondary-container": "#fffbff",
+                  "accent-ai": "#6c2bd9",
+                  "on-primary-fixed": "#00174d",
+                  "surface-variant": "#e2e1ed",
+                  "secondary": "#6f30dc",
+                  "primary": "#003fb1",
+                  "on-primary-container": "#d4dcff",
+                  "error": "#ba1a1a",
+                  "outline-variant": "#c3c5d7",
+                  "danger": "#c81e1e",
+                  "on-error-container": "#93000a",
+                  "background": "#faf8ff",
+                  "warning": "#c27803",
+                  "tertiary-container": "#ad3b00",
+                  "on-surface-variant": "#434654",
+                  "secondary-fixed-dim": "#d2bcff",
+                  "surface-container": "#ededf8",
+                  "on-surface": "#191b23",
+                  "on-secondary": "#ffffff",
+                  "error-container": "#ffdad6",
+                  "surface-container-highest": "#e2e1ed",
+                  "on-tertiary-fixed-variant": "#802a00",
+                  "on-tertiary-fixed": "#380d00",
+                  "surface-tint": "#1353d8",
+                  "primary-fixed": "#dbe1ff",
+                  "on-secondary-fixed": "#25005a",
+                  "tertiary": "#852b00",
+                  "surface-dim": "#d9d9e4",
+                  "neutral-700": "#374151",
+                  "neutral-50": "#f9fafb",
+                  "on-primary": "#ffffff",
+                  "inverse-on-surface": "#f0f0fb",
+                  "surface-bright": "#faf8ff",
+                  "on-error": "#ffffff",
+                  "inverse-primary": "#b5c4ff",
+                  "neutral-900": "#111928",
+                  "surface": "#faf8ff",
+                  "neutral-200": "#e5e7eb"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "max-content-width": "80rem",
+                  "sidebar-collapsed": "64px",
+                  "sidebar-width": "240px",
+                  "container-padding": "1.5rem",
+                  "gutter": "1rem",
+                  "card-padding": "1.5rem"
+          },
+          "fontFamily": {
+                  "label-xs": ["Inter", "sans-serif"],
+                  "headline-md": ["Inter", "sans-serif"],
+                  "headline-lg": ["Inter", "sans-serif"],
+                  "body-sm": ["Inter", "sans-serif"],
+                  "body-muted": ["Inter", "sans-serif"]
+          },
+          "fontSize": {
+                  "label-xs": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                  "headline-md": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                  "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                  "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                  "body-muted": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-neutral-50 font-body-sm text-on-background min-h-screen flex flex-col">
+<!-- Minimal Header for Public View -->
+<header class="bg-surface-container-lowest border-b border-neutral-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="work">work</span>
+</div>
+<h1 class="font-headline-md text-on-surface">HireFlow</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-warning/10 text-warning px-3 py-1 rounded-full text-label-xs flex items-center gap-1 border border-warning/20">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+        Expires Oct 30, 2026
+      </div>
+<button class="flex items-center gap-2 bg-surface-container-lowest border border-neutral-200 text-neutral-700 px-4 py-2 rounded-lg text-body-sm font-medium hover:bg-neutral-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+        Download Report
+      </button>
+</div>
+</header>
+<main class="flex-1 max-w-[1280px] w-full mx-auto p-6 md:p-8 space-y-8">
+<!-- Header Section -->
+<section class="space-y-4">
+<div>
+<h2 class="font-headline-lg text-neutral-900">Shortlist for Senior Frontend Developer</h2>
+<p class="text-neutral-700 text-body-sm mt-1">Acme Corp • 3 Candidates Recommended</p>
+</div>
+<!-- Riya Summary Box -->
+<div class="bg-accent-ai/5 border border-accent-ai/20 rounded-xl p-5 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-accent-ai"></div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-accent-ai/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-accent-ai" data-icon="sparkles" data-weight="fill">colors_spark</span>
+</div>
+<div class="space-y-2">
+<h3 class="font-semibold text-neutral-900 text-sm flex items-center gap-2">
+              Overall Pool Quality
+              <span class="bg-accent-ai/10 text-accent-ai px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase border border-accent-ai/20">Powered by Riya AI</span>
+</h3>
+<p class="text-neutral-700 text-sm leading-relaxed">
+              This shortlist represents top-tier talent with strong backgrounds in modern frontend frameworks (React, Vue) and scalable architectures. The candidates demonstrated exceptional problem-solving skills during the technical assessments, particularly in state management and performance optimization. While all three are technically sound, they offer different balances of leadership experience versus deep individual contributor expertise.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Split Layout for Candidates & Details -->
+<div class="flex flex-col lg:flex-row gap-6">
+<!-- Left Column: Candidate List -->
+<div class="w-full lg:w-[40%] space-y-4">
+<h3 class="font-headline-md text-neutral-900 px-1">Ranked Candidates</h3>
+<!-- Candidate 1 (Selected) -->
+<div class="bg-surface-container-lowest border-2 border-primary/20 rounded-xl p-4 shadow-sm cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary/10 text-primary-container font-bold px-2 py-0.5 rounded text-xs">#1 Rank</span>
+<h4 class="font-semibold text-neutral-900 text-base">Arjun Mehta</h4>
+</div>
+<p class="text-body-muted text-neutral-700">7 years exp • React, TypeScript, Next.js</p>
+</div>
+<!-- Score Donut (Simulated) -->
+<div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-neutral-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-success" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="92, 100" stroke-width="3"></path>
+</svg>
+<span class="absolute text-xs font-bold text-neutral-900">92</span>
+</div>
+</div>
+<div class="bg-neutral-50 rounded p-2 text-xs text-neutral-700 border border-neutral-200">
+<span class="font-medium text-neutral-900">Strength:</span> Exceptional architecture design skills. Led migration of legacy app to Next.js.
+          </div>
+</div>
+<!-- Candidate 2 -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl p-4 shadow-sm hover:border-neutral-300 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-neutral-100 text-neutral-600 font-bold px-2 py-0.5 rounded text-xs border border-neutral-200">#2 Rank</span>
+<h4 class="font-semibold text-neutral-900 text-base">Priya Iyer</h4>
+</div>
+<p class="text-body-muted text-neutral-700">5 years exp • Vue.js, Nuxt, Tailwind</p>
+</div>
+<!-- Score Donut (Simulated) -->
+<div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-neutral-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-success" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="88, 100" stroke-width="3"></path>
+</svg>
+<span class="absolute text-xs font-bold text-neutral-900">88</span>
+</div>
+</div>
+<div class="bg-neutral-50 rounded p-2 text-xs text-neutral-700 border border-neutral-200">
+<span class="font-medium text-neutral-900">Strength:</span> High velocity shipper. Excellent UI/UX sensibilities and component design.
+          </div>
+</div>
+<!-- Candidate 3 -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl p-4 shadow-sm hover:border-neutral-300 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-neutral-100 text-neutral-600 font-bold px-2 py-0.5 rounded text-xs border border-neutral-200">#3 Rank</span>
+<h4 class="font-semibold text-neutral-900 text-base">Rohan Das</h4>
+</div>
+<p class="text-body-muted text-neutral-700">8 years exp • React, Redux, WebGL</p>
+</div>
+<!-- Score Donut (Simulated) -->
+<div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-neutral-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-warning" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="79, 100" stroke-width="3"></path>
+</svg>
+<span class="absolute text-xs font-bold text-neutral-900">79</span>
+</div>
+</div>
+<div class="bg-neutral-50 rounded p-2 text-xs text-neutral-700 border border-neutral-200">
+<span class="font-medium text-warning">Risk:</span> Slightly lower alignment on required tech stack (heavy Redux vs Context/Zustand preference).
+          </div>
+</div>
+</div>
+<!-- Right Column: Detail Panel (Arjun Mehta) -->
+<div class="w-full lg:w-[60%] flex flex-col gap-6">
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm overflow-hidden flex flex-col h-full">
+<!-- Detail Header -->
+<div class="p-6 border-b border-neutral-200 bg-neutral-50 flex justify-between items-start">
+<div>
+<h2 class="font-headline-lg text-neutral-900">Arjun Mehta</h2>
+<p class="text-neutral-700 mt-1">Senior Frontend Developer • Current: Lead UI at TechFlow</p>
+<div class="flex gap-2 mt-3">
+<span class="inline-flex items-center gap-1 bg-success/10 text-success px-2 py-1 rounded text-xs font-medium border border-success/20">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span> Ready to Hire
+                </span>
+<span class="inline-flex items-center gap-1 bg-neutral-200 text-neutral-700 px-2 py-1 rounded text-xs font-medium border border-neutral-300">
+                  Expected: ₹35LPA
+                </span>
+</div>
+</div>
+<div class="text-center">
+<div class="text-3xl font-bold text-success">92</div>
+<div class="text-xs text-neutral-500 uppercase tracking-wide font-medium mt-1">Match Score</div>
+</div>
+</div>
+<div class="p-6 space-y-6 flex-1">
+<!-- AI Justification -->
+<div class="bg-accent-ai/5 border border-accent-ai/20 rounded-lg p-4 relative">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[16px] text-accent-ai" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-xs font-bold text-accent-ai uppercase tracking-wider">Riya's Assessment</span>
+</div>
+<p class="text-sm text-neutral-700 leading-relaxed">
+                Arjun is a standout candidate for the Senior Frontend role. He strongly indexes on your 'Must-Haves', specifically demonstrating deep expertise in React performance optimization and micro-frontend architecture. His experience scaling the tech stack at TechFlow directly mirrors the challenges Acme Corp is currently facing. He is highly communicative and shows strong potential for technical leadership.
+              </p>
+</div>
+<!-- Dimension Breakdown -->
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 mb-4 border-b border-neutral-200 pb-2">Dimension Breakdown</h3>
+<div class="space-y-4">
+<!-- Dimension Item -->
+<div class="flex items-center gap-4">
+<div class="w-24 text-xs font-medium text-neutral-600 text-right shrink-0">Must-Haves</div>
+<div class="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
+<div class="h-full bg-success rounded-full" style="width: 95%"></div>
+</div>
+<div class="w-8 text-xs font-semibold text-neutral-900 text-right">95%</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 text-xs font-medium text-neutral-600 text-right shrink-0">Experience</div>
+<div class="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
+<div class="h-full bg-success rounded-full" style="width: 90%"></div>
+</div>
+<div class="w-8 text-xs font-semibold text-neutral-900 text-right">90%</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 text-xs font-medium text-neutral-600 text-right shrink-0">Skills</div>
+<div class="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
+<div class="h-full bg-success rounded-full" style="width: 92%"></div>
+</div>
+<div class="w-8 text-xs font-semibold text-neutral-900 text-right">92%</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 text-xs font-medium text-neutral-600 text-right shrink-0">Nice-to-Haves</div>
+<div class="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
+<div class="h-full bg-warning rounded-full" style="width: 70%"></div>
+</div>
+<div class="w-8 text-xs font-semibold text-neutral-900 text-right">70%</div>
+</div>
+</div>
+</div>
+<!-- Strengths / Risks Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-neutral-200 rounded-lg p-4 bg-neutral-50/50">
+<h4 class="text-xs font-bold text-success uppercase tracking-wide mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="thumb_up">thumb_up</span> Key Strengths
+                </h4>
+<ul class="text-sm text-neutral-700 space-y-2 list-disc pl-4 marker:text-success">
+<li>Expertise in React internals and rendering optimization.</li>
+<li>Proven track record of mentoring junior developers.</li>
+<li>Strong understanding of CI/CD pipelines for frontend deployments.</li>
+</ul>
+</div>
+<div class="border border-neutral-200 rounded-lg p-4 bg-neutral-50/50">
+<h4 class="text-xs font-bold text-warning uppercase tracking-wide mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="warning">warning</span> Potential Risks
+                </h4>
+<ul class="text-sm text-neutral-700 space-y-2 list-disc pl-4 marker:text-warning">
+<li>Less hands-on experience with native mobile (React Native) than ideally desired.</li>
+<li>Expected salary is at the top end of the approved band.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Suggested Interview Questions -->
+<div class="bg-surface-container-lowest border border-neutral-200 rounded-xl shadow-sm p-6">
+<div class="flex items-center gap-2 mb-4 pb-2 border-b border-neutral-200">
+<span class="material-symbols-outlined text-accent-ai" data-icon="psychology">psychology</span>
+<h3 class="font-headline-md text-neutral-900">Riya's Interview Suggestions</h3>
+</div>
+<p class="text-sm text-neutral-600 mb-4">Based on Arjun's profile and your required competencies, focus on these areas during the final interview:</p>
+<ul class="space-y-4">
+<li class="bg-neutral-50 p-3 rounded border border-neutral-200 flex gap-3">
+<div class="text-accent-ai font-bold">1.</div>
+<div>
+<p class="text-sm font-medium text-neutral-900">Architecture &amp; Scaling</p>
+<p class="text-xs text-neutral-600 mt-1">"Can you walk me through the hardest performance bottleneck you had to solve during the TechFlow migration? How did you measure the impact?"</p>
+</div>
+</li>
+<li class="bg-neutral-50 p-3 rounded border border-neutral-200 flex gap-3">
+<div class="text-accent-ai font-bold">2.</div>
+<div>
+<p class="text-sm font-medium text-neutral-900">Leadership Gap Probe</p>
+<p class="text-xs text-neutral-600 mt-1">"Tell me about a time you had to push back on a product requirement because it compromised frontend technical debt. How did you handle the conversation?"</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+</body></html>

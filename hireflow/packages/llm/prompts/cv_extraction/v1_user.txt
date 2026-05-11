@@ -1,0 +1,7 @@
+CV text (PII removed):
+
+---
+$cv_text
+---
+
+Extract the structured information. Return the JSON object only.
