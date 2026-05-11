@@ -19,5 +19,9 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
 
+# Copy startup script (runs migrations then starts uvicorn)
+COPY apps/api/start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Railway injects $PORT; fall back to 8000 for local Docker Compose
-CMD ["sh", "-c", "uvicorn apps.api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["/app/start.sh"]
