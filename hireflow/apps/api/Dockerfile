@@ -19,8 +19,9 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
 
-# Copy startup script (runs migrations then starts uvicorn)
+# Copy startup script (runs migrations, seeds, then starts uvicorn)
 COPY apps/api/start.sh /app/start.sh
+COPY apps/api/seed.py /app/apps/api/seed.py
 RUN chmod +x /app/start.sh
 
 # Railway injects $PORT; fall back to 8000 for local Docker Compose
