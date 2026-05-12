@@ -54,6 +54,11 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
     queryKey: ["job", params.id],
     queryFn: () => jobsApi.get(params.id).then((r) => r.data as Job),
     placeholderData: MOCK_JOB,
+    // Poll until the JD is extracted so the recruiter doesn't have to refresh
+    refetchInterval: (query) => {
+      const s = query.state.data?.status;
+      return s === "draft" || s === undefined ? 3000 : false;
+    },
   });
 
   const confirmMutation = useMutation({

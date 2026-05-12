@@ -12,10 +12,11 @@ GET   /api/v1/jobs/{job_id}/shortlist    ranked shortlist with scores
 GET   /api/v1/jobs/{job_id}/audit        full audit trail
 """
 
+import datetime
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from pydantic import BaseModel, Field
 
 from apps.api.middleware.auth import TokenData, get_current_user
@@ -112,12 +113,35 @@ def get_job(
             for p in posts
         }
 
+        # Karnataka salary-disclosure warning (PE-001)
+        state = (job.location or {}).get("state", "")
+        karnataka_salary_warning = (
+            state.lower() == "karnataka"
+            and not job.salary_disclosed
+            and not job.salary_min
+        )
+
         return {
             "id": str(job.id),
             "title": job.title,
             "status": job.status,
+            "department": job.department,
+            "seniority": job.seniority,
+            "location": job.location,
+            "must_haves": job.must_haves,
+            "nice_to_haves": job.nice_to_haves,
+            "responsibilities": job.responsibilities,
+            "tech_stack": job.tech_stack,
+            "salary_min": job.salary_min,
+            "salary_max": job.salary_max,
+            "salary_currency": job.salary_currency,
+            "salary_disclosed": job.salary_disclosed,
+            "bias_flags": job.bias_flags,
+            "scoring_rubric": job.scoring_rubric,
+            "shortlist_size": job.shortlist_size,
             "collection_email": job.collection_email,
             "channel_status": channel_status,
+            "karnataka_salary_warning": karnataka_salary_warning,
             "created_at": job.created_at.isoformat(),
             "posted_at": job.posted_at.isoformat() if job.posted_at else None,
         }
@@ -295,10 +319,108 @@ def get_shortlist(
                 "risks": s.risks,
                 "near_miss_flag": s.near_miss_flag,
                 "recruiter_status": s.recruiter_status,
-                "nps_thumb": s.nps_thumb,
+                "nps_thumb": (s.nps_thumb == 1) if s.nps_thumb is not None else None,
                 "source_channel": c.source_channel if c else None,
             })
         return result
+
+
+@router.post("/jobs/{job_id}/upload-cv", status_code=status.HTTP_202_ACCEPTED)
+async def upload_cv(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+    file: UploadFile = File(...),
+    email: str = Form(...),
+    name: str = Form(""),
+    source_channel: str = Form("direct"),
+):
+    """Upload a CV file for a job. Creates a Candidate record and queues parsing."""
+    from packages.db.models import Candidate
+    from packages.storage import client as storage
+
+    # Verify job exists and belongs to this tenant
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+
+    # Read and validate file
+    data = await file.read()
+    if len(data) == 0:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    if len(data) > 10 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="File too large (max 10 MB)")
+
+    filename = file.filename or "cv.pdf"
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "pdf"
+    if ext not in {"pdf", "doc", "docx"}:
+        raise HTTPException(status_code=415, detail="Only PDF, DOC, and DOCX files are accepted")
+
+    # Upload to object storage
+    ts = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%S")
+    key = storage.cv_key(str(user.tenant_id), str(job_id), email, ts, ext)
+    try:
+        storage.upload(key, data, content_type=file.content_type or "application/octet-stream")
+    except KeyError:
+        raise HTTPException(
+            status_code=503,
+            detail="Object storage not configured. Set MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY.",
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Storage unavailable: {exc}") from exc
+
+    # Upsert candidate record
+    with get_db() as db:
+        existing = db.query(Candidate).filter_by(
+            job_id=job_id, tenant_id=user.tenant_id, email=email
+        ).first()
+
+        if existing:
+            existing.cv_file_key = key
+            existing.cv_original_filename = filename
+            existing.status = "received"
+            candidate_id = existing.id
+        else:
+            candidate_id = uuid.uuid4()
+            candidate = Candidate(
+                id=candidate_id,
+                tenant_id=user.tenant_id,
+                job_id=job_id,
+                email=email,
+                name=name or None,
+                source_channel=source_channel,
+                cv_file_key=key,
+                cv_original_filename=filename,
+                status="received",
+                dpdp_consent=True,
+                consent_ts=datetime.datetime.utcnow(),
+            )
+            db.add(candidate)
+
+    log_event(
+        EventType.APPLICATION_RECEIVED,
+        tenant_id=user.tenant_id,
+        entity_type="candidate",
+        entity_id=candidate_id,
+        data={"email": email, "source_channel": source_channel, "filename": filename},
+    )
+
+    publish(
+        Topics.APPLICATION_RECEIVED,
+        {
+            "candidate_id": str(candidate_id),
+            "job_id": str(job_id),
+            "cv_file_key": key,
+            "email": email,
+        },
+        tenant_id=user.tenant_id,
+    )
+
+    return {
+        "candidate_id": str(candidate_id),
+        "status": "received",
+        "message": "CV received and queued for parsing",
+    }
 
 
 @router.get("/jobs/{job_id}/audit")

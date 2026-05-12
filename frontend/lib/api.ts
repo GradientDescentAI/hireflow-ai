@@ -48,6 +48,11 @@ export const jobsApi = {
   distribute: (id: string, body: { channels: string[]; channel_config: Record<string, unknown> }) =>
     api.post(`/jobs/${id}/distribute`, body),
   score: (id: string) => api.post(`/jobs/${id}/score`),
+  uploadCV: (id: string, formData: FormData) =>
+    api.post(`/jobs/${id}/upload-cv`, formData, {
+      // Let axios set the correct Content-Type boundary for multipart
+      headers: { "Content-Type": undefined },
+    }),
   applications: (id: string, params?: { channel?: string; status?: string }) =>
     api.get(`/jobs/${id}/applications`, { params }),
   shortlist: (id: string) => api.get(`/jobs/${id}/shortlist`),

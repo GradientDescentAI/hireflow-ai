@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/Button";
 import { jobsApi } from "@/lib/api";
@@ -19,6 +19,132 @@ const MOCK_APPS: ApplicationSummary[] = [
 const CHANNEL_OPTIONS = ["All", "linkedin", "email", "whatsapp"];
 const STATUS_OPTIONS = ["All", "received", "parsed", "scored", "parse_failed"];
 
+// ── Upload CV modal ────────────────────────────────────────────────────────────
+
+function UploadCVModal({
+  jobId,
+  onClose,
+}: {
+  jobId: string;
+  onClose: () => void;
+}) {
+  const qc = useQueryClient();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [error, setError] = useState("");
+
+  const mutation = useMutation({
+    mutationFn: (fd: FormData) => jobsApi.uploadCV(jobId, fd),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["applications", jobId] });
+      onClose();
+    },
+    onError: (err: unknown) => {
+      const msg =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data
+          ?.detail ?? "Upload failed. Check storage configuration.";
+      setError(msg);
+    },
+  });
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    const file = fileRef.current?.files?.[0];
+    if (!file) { setError("Select a CV file"); return; }
+    if (!email) { setError("Candidate email is required"); return; }
+
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("email", email);
+    fd.append("name", name);
+    fd.append("source_channel", "direct");
+    mutation.mutate(fd);
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-2xl">
+        <div className="flex items-center justify-between border-b border-outline-variant px-6 py-4">
+          <h2 className="text-headline-sm text-on-surface">Upload CV</h2>
+          <button onClick={onClose} className="rounded p-1 hover:bg-surface-container text-on-surface-variant">
+            <span className="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {/* File picker */}
+          <div>
+            <label className="label">CV File (PDF, DOC, DOCX — max 10 MB)</label>
+            <div
+              className="mt-1 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-outline-variant bg-surface-container px-4 py-8 hover:border-primary hover:bg-primary/5 transition-colors"
+              onClick={() => fileRef.current?.click()}
+            >
+              <span className="material-symbols-outlined text-[36px] text-on-surface-variant">upload_file</span>
+              {fileName ? (
+                <p className="text-label-xs font-medium text-primary">{fileName}</p>
+              ) : (
+                <p className="text-label-xs text-on-surface-variant">Click to browse or drag & drop</p>
+              )}
+            </div>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".pdf,.doc,.docx"
+              className="hidden"
+              onChange={(e) => setFileName(e.target.files?.[0]?.name ?? "")}
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="label">Candidate Email *</label>
+            <input
+              type="email"
+              className="input"
+              placeholder="candidate@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Name */}
+          <div>
+            <label className="label">Candidate Name (optional)</label>
+            <input
+              type="text"
+              className="input"
+              placeholder="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          {error && (
+            <p className="rounded-lg border border-danger/30 bg-danger/5 px-3 py-2 text-label-xs text-danger">
+              {error}
+            </p>
+          )}
+
+          <div className="flex justify-end gap-2 pt-1">
+            <Button type="button" variant="outline" size="sm" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" loading={mutation.isPending}>
+              <span className="material-symbols-outlined text-[14px]">upload</span>
+              Upload & Queue
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ── Confidence pill ────────────────────────────────────────────────────────────
+
 function ConfidencePill({ confidence, flagged }: { confidence: number | null; flagged: boolean }) {
   if (confidence === null) return <span className="text-on-surface-variant text-label-xs">—</span>;
   if (confidence >= 0.8) return <span className="inline-flex items-center gap-1 text-label-xs text-success"><span className="h-1.5 w-1.5 rounded-full bg-success" />High</span>;
@@ -29,6 +155,7 @@ function ConfidencePill({ confidence, flagged }: { confidence: number | null; fl
 export default function ApplicationsPage({ params }: { params: { id: string } }) {
   const [channel, setChannel] = useState("All");
   const [status, setStatus] = useState("All");
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   const { data: apps } = useQuery({
     queryKey: ["applications", params.id, channel, status],
@@ -54,6 +181,10 @@ export default function ApplicationsPage({ params }: { params: { id: string } })
         { label: "Applications" },
       ]}
     >
+      {uploadOpen && (
+        <UploadCVModal jobId={params.id} onClose={() => setUploadOpen(false)} />
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-headline-lg text-on-surface">Applications</h1>
@@ -61,10 +192,16 @@ export default function ApplicationsPage({ params }: { params: { id: string } })
             {filtered.length} application{filtered.length !== 1 ? "s" : ""} received
           </p>
         </div>
-        <Button variant="secondary" size="sm">
-          <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
-          Trigger Scoring
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => setUploadOpen(true)}>
+            <span className="material-symbols-outlined text-[14px]">upload_file</span>
+            Upload CV
+          </Button>
+          <Button variant="secondary" size="sm">
+            <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
+            Trigger Scoring
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}

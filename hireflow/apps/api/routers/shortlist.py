@@ -6,7 +6,7 @@ Score overrides are supported with mandatory reason (SC-004).
 """
 
 import uuid
-from typing import Annotated
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
@@ -20,8 +20,11 @@ router = APIRouter(prefix="/api/v1", tags=["shortlist"])
 
 
 class ShortlistUpdateRequest(BaseModel):
-    recruiter_status: str = Field(..., pattern="^(approved|rejected|hold)$")
-    nps_thumb: int | None = Field(None, ge=1, le=5)
+    # Optional — omit to send NPS-only or override-only updates
+    recruiter_status: Literal["approved", "rejected", "hold"] | None = None
+    # bool aligns with the frontend thumbs-up / thumbs-down UI;
+    # stored as int in DB: 1 = positive, 0 = negative
+    nps_thumb: bool | None = None
     override_score: float | None = Field(None, ge=0, le=100)
     override_reason: str | None = None
 
@@ -40,32 +43,45 @@ def update_shortlist_item(
         if score is None:
             raise HTTPException(status_code=404, detail="Score not found")
 
-        score.recruiter_status = body.recruiter_status
+        if body.recruiter_status is not None:
+            score.recruiter_status = body.recruiter_status
         if body.nps_thumb is not None:
-            score.nps_thumb = body.nps_thumb
+            score.nps_thumb = 1 if body.nps_thumb else 0
         if body.override_score is not None:
             score.recruiter_override_score = body.override_score
             score.recruiter_override_reason = body.override_reason
 
-    event_type_map = {
-        "approved": EventType.CANDIDATE_APPROVED,
-        "rejected": EventType.CANDIDATE_REJECTED,
-        "hold": EventType.CANDIDATE_HELD,
-    }
+    # Log status change event (only when a status was actually set)
+    if body.recruiter_status is not None:
+        event_type_map = {
+            "approved": EventType.CANDIDATE_APPROVED,
+            "rejected": EventType.CANDIDATE_REJECTED,
+            "hold": EventType.CANDIDATE_HELD,
+        }
+        log_event(
+            event_type_map[body.recruiter_status],
+            tenant_id=user.tenant_id,
+            user_id=user.recruiter_id,
+            entity_type="candidate_score",
+            entity_id=score_id,
+            data={
+                "override_score": body.override_score,
+                "override_reason": body.override_reason,
+            },
+        )
 
-    log_event(
-        event_type_map[body.recruiter_status],
-        tenant_id=user.tenant_id,
-        user_id=user.recruiter_id,
-        entity_type="candidate_score",
-        entity_id=score_id,
-        data={
-            "nps_thumb": body.nps_thumb,
-            "override_score": body.override_score,
-            "override_reason": body.override_reason,
-        },
-    )
+    # Log NPS event
+    if body.nps_thumb is not None:
+        log_event(
+            EventType.NPS_THUMB_RECORDED,
+            tenant_id=user.tenant_id,
+            user_id=user.recruiter_id,
+            entity_type="candidate_score",
+            entity_id=score_id,
+            data={"nps_thumb": body.nps_thumb},
+        )
 
+    # Log score override separately (audit requirement SC-004)
     if body.override_score is not None:
         log_event(
             EventType.SCORE_OVERRIDE,
