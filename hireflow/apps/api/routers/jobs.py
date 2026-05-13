@@ -114,7 +114,7 @@ def get_job(
         }
 
         # Karnataka salary-disclosure warning (PE-001)
-        state = (job.location or {}).get("state", "")
+        state = str((job.location or {}).get("state") or "")
         karnataka_salary_warning = (
             state.lower() == "karnataka"
             and not job.salary_disclosed
