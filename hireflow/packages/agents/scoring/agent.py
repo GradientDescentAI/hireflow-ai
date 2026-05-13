@@ -47,6 +47,16 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
         }
 
         # Extract all needed candidate data while inside the session (avoid detached-instance errors)
+        all_for_job = db.query(Candidate).filter_by(job_id=job_uuid).all()
+        import structlog as _structlog
+        _structlog.get_logger().info(
+            "scoring_debug",
+            job_id=job_id,
+            total_for_job=len(all_for_job),
+            statuses=[c.status for c in all_for_job],
+            is_duplicates=[c.is_duplicate for c in all_for_job],
+            opted_outs=[c.opted_out for c in all_for_job],
+        )
         candidate_rows = [
             {
                 "id": c.id,
@@ -58,9 +68,8 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
                 "certifications": c.certifications,
                 "languages": c.languages,
             }
-            for c in db.query(Candidate)
-            .filter_by(job_id=job_uuid, status="parsed", is_duplicate=False, opted_out=False)
-            .all()
+            for c in all_for_job
+            if c.status == "parsed" and not c.is_duplicate and not c.opted_out
         ]
 
     if not candidate_rows:
