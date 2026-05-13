@@ -52,35 +52,38 @@ def consume(
     count: int = 10,
     block_ms: int = 2000,
 ) -> Iterator[Message]:
-    """Yield messages from a stream consumer group.
+    """Yield messages from a stream consumer group (single pass).
+
+    Performs one xreadgroup call and yields whatever messages are available.
+    The caller (worker main loop) is responsible for re-calling in a loop
+    so that all topics are polled in round-robin fashion.
 
     Caller is responsible for calling ack() on each message after processing.
     """
     r = _get_redis()
     ensure_group(stream, group)
 
-    while True:
-        entries = r.xreadgroup(
-            group, consumer_name, {stream: ">"}, count=count, block=block_ms
-        )
-        if not entries:
-            continue
+    entries = r.xreadgroup(
+        group, consumer_name, {stream: ">"}, count=count, block=block_ms
+    )
+    if not entries:
+        return
 
-        for _stream, messages in entries:
-            for entry_id, fields in messages:
-                try:
-                    payload = json.loads(fields.get("payload", "{}"))
-                except json.JSONDecodeError:
-                    payload = {}
+    for _stream, messages in entries:
+        for entry_id, fields in messages:
+            try:
+                payload = json.loads(fields.get("payload", "{}"))
+            except json.JSONDecodeError:
+                payload = {}
 
-                yield Message(
-                    stream=stream,
-                    entry_id=entry_id,
-                    tenant_id=fields.get("tenant_id", ""),
-                    published_at=fields.get("published_at", ""),
-                    payload=payload,
-                    raw=fields,
-                )
+            yield Message(
+                stream=stream,
+                entry_id=entry_id,
+                tenant_id=fields.get("tenant_id", ""),
+                published_at=fields.get("published_at", ""),
+                payload=payload,
+                raw=fields,
+            )
 
 
 def ack(stream: str, group: str, entry_id: str) -> None:
