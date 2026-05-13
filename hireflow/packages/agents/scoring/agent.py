@@ -46,13 +46,24 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
             "scoring_rubric": job.scoring_rubric,
         }
 
-        candidates = (
-            db.query(Candidate)
+        # Extract all needed candidate data while inside the session (avoid detached-instance errors)
+        candidate_rows = [
+            {
+                "id": c.id,
+                "name": c.name,
+                "experience": c.experience,
+                "education": c.education,
+                "skills_hard": c.skills_hard,
+                "skills_soft": c.skills_soft,
+                "certifications": c.certifications,
+                "languages": c.languages,
+            }
+            for c in db.query(Candidate)
             .filter_by(job_id=job_uuid, status="parsed", is_duplicate=False, opted_out=False)
             .all()
-        )
+        ]
 
-    if not candidates:
+    if not candidate_rows:
         return {"job_id": job_id, "scored": 0, "status": "no_candidates"}
 
     log_event(
@@ -60,21 +71,21 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
         tenant_id=tenant_uuid,
         entity_type="job",
         entity_id=job_uuid,
-        data={"candidate_count": len(candidates)},
+        data={"candidate_count": len(candidate_rows)},
     )
 
     model_version = STAGE_ROUTES["candidate_scoring"].model
 
     scores: list[tuple[uuid.UUID, float, dict]] = []   # (candidate_id, composite, score_dict)
 
-    for c in candidates:
+    for c in candidate_rows:
         candidate_profile = {
-            "experience": c.experience,
-            "education": c.education,
-            "skills_hard": c.skills_hard,
-            "skills_soft": c.skills_soft,
-            "certifications": c.certifications,
-            "languages": c.languages,
+            "experience": c["experience"],
+            "education": c["education"],
+            "skills_hard": c["skills_hard"],
+            "skills_soft": c["skills_soft"],
+            "certifications": c["certifications"],
+            "languages": c["languages"],
         }
 
         try:
@@ -84,12 +95,12 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
                 EventType.AGENT_ERROR,
                 tenant_id=tenant_uuid,
                 entity_type="candidate",
-                entity_id=c.id,
+                entity_id=c["id"],
                 data={"error": str(exc), "stage": "scoring"},
             )
             continue
 
-        scores.append((c.id, result["composite_score"], result))
+        scores.append((c["id"], result["composite_score"], result))
 
     # ── Assign ranks (highest score = rank 1) ─────────────────────────────────
     scores.sort(key=lambda x: x[1], reverse=True)
@@ -124,17 +135,17 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
             job.status = "scoring"
 
     # ── Bias audit (SC-008) ───────────────────────────────────────────────────
-    all_names = [c.name for c in candidates]
+    all_names = [c["name"] for c in candidate_rows]
     shortlist_size = 10
 
     with get_db() as db:
-        shortlisted_candidates = (
-            db.query(Candidate)
+        shortlisted_names = [
+            c.name
+            for c in db.query(Candidate)
             .join(CandidateScore, Candidate.id == CandidateScore.candidate_id)
             .filter(CandidateScore.job_id == job_uuid, CandidateScore.rank <= shortlist_size)
             .all()
-        )
-    shortlisted_names = [c.name for c in shortlisted_candidates]
+        ]
 
     audit_result = run_bias_audit(all_names, shortlisted_names)
 
