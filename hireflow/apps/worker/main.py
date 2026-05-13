@@ -119,13 +119,23 @@ def process_application_received(payload: dict, tenant_id: str) -> None:
 
 
 def process_cv_parsed(payload: dict, tenant_id: str) -> None:
-    """CV_PARSED — log only; batch scoring is triggered explicitly via POST /jobs/{id}/score."""
+    """CV_PARSED — ack each parse; if trigger=manual_score_request, run batch scoring."""
+    job_id = payload.get("job_id")
+    candidate_id = payload.get("candidate_id")
+    trigger = payload.get("trigger", "")
+
     log.info(
         "cv_parsed_ack",
-        candidate_id=payload.get("candidate_id"),
-        job_id=payload.get("job_id"),
+        candidate_id=candidate_id,
+        job_id=job_id,
         tenant_id=tenant_id,
     )
+
+    if trigger == "manual_score_request" and job_id:
+        from packages.agents.scoring import agent as scoring_agent
+        log.info("scoring_start", job_id=job_id, tenant_id=tenant_id)
+        result = scoring_agent.run(job_id=job_id, tenant_id=tenant_id)
+        log.info("scoring_complete", job_id=job_id, scored=result.get("scored"), tenant_id=tenant_id)
 
 
 def process_scoring_complete(payload: dict, tenant_id: str) -> None:
