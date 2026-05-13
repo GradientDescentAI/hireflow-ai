@@ -100,6 +100,8 @@ def run(job_id: str, tenant_id: str, plan: str = "free") -> dict:
         try:
             result = score_candidate(job_dict, candidate_profile, plan=plan)
         except Exception as exc:
+            import structlog as _sl
+            _sl.get_logger().error("scoring_candidate_error", candidate_id=str(c["id"]), error=str(exc))
             log_event(
                 EventType.AGENT_ERROR,
                 tenant_id=tenant_uuid,
