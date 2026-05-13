@@ -67,13 +67,26 @@ def process_jd_approved(payload: dict, tenant_id: str) -> None:
 
 
 def process_distribution_started(payload: dict, tenant_id: str) -> None:
-    """DISTRIBUTION_STARTED — log only; distribution is handled within the graph."""
-    log.info(
-        "distribution_started",
-        job_id=payload.get("job_id"),
-        channels=payload.get("channels", []),
+    """DISTRIBUTION_STARTED → fan out to channel agents via the orchestrator."""
+    from packages.agents.distribution import orchestrator as distribution_agent
+
+    job_id = payload.get("job_id")
+    channels = payload.get("channels", ["linkedin"])
+    channel_config = payload.get("channel_config", {})
+
+    if not job_id:
+        log.error("distribution_started_missing_job_id", payload=payload)
+        return
+
+    log.info("distribution_start", job_id=job_id, channels=channels, tenant_id=tenant_id)
+
+    result = distribution_agent.run(
+        job_id=job_id,
         tenant_id=tenant_id,
+        channels=channels,
+        channel_config=channel_config,
     )
+    log.info("distribution_complete", job_id=job_id, result=result)
 
 
 def process_application_received(payload: dict, tenant_id: str) -> None:
@@ -82,7 +95,8 @@ def process_application_received(payload: dict, tenant_id: str) -> None:
 
     candidate_id = payload.get("candidate_id")
     job_id = payload.get("job_id")
-    s3_key = payload.get("s3_key")
+    # cv_file_key is published by the upload-cv endpoint; s3_key is the legacy field name
+    s3_key = payload.get("s3_key") or payload.get("cv_file_key")
 
     if not all([candidate_id, job_id, s3_key]):
         log.error("application_received_missing_fields", payload=payload)

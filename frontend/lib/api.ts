@@ -56,6 +56,7 @@ export const jobsApi = {
   applications: (id: string, params?: { channel?: string; status?: string }) =>
     api.get(`/jobs/${id}/applications`, { params }),
   shortlist: (id: string) => api.get(`/jobs/${id}/shortlist`),
+  linkedinDraft: (id: string) => api.get<{ post_body: string; character_count: number }>(`/jobs/${id}/linkedin-draft`),
   audit: (id: string) => api.get(`/jobs/${id}/audit`),
   posts: (id: string) => api.get(`/jobs/${id}/posts`),
 };

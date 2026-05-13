@@ -325,6 +325,48 @@ def get_shortlist(
         return result
 
 
+@router.get("/jobs/{job_id}/linkedin-draft")
+def get_linkedin_draft(
+    job_id: uuid.UUID,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Generate a LinkedIn post draft via LLM from the real job data.
+    Non-destructive — no DB writes. Requires job to be in approved/posted/collecting status."""
+    from packages.db.models import Tenant as TenantModel
+    from packages.agents.distribution.linkedin.post_builder import build_post
+
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+        if job.status not in ("approved", "posted", "collecting", "shortlisted", "closed"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Job must be approved before generating a post draft (current: {job.status})",
+            )
+
+        tenant = db.get(TenantModel, user.tenant_id)
+        company_name = tenant.name if tenant else "the company"
+
+        role_id = str(job_id)[:8].upper()
+        job_dict = {
+            "title": job.title,
+            "location": job.location,
+            "responsibilities": job.responsibilities,
+            "must_haves": job.must_haves,
+            "tech_stack": job.tech_stack,
+            "salary_min": job.salary_min,
+            "salary_max": job.salary_max,
+        }
+
+    try:
+        post_body = build_post(job_dict, company_name, role_id)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Post generation failed: {exc}") from exc
+
+    return {"post_body": post_body, "character_count": len(post_body)}
+
+
 @router.post("/jobs/{job_id}/upload-cv", status_code=status.HTTP_202_ACCEPTED)
 async def upload_cv(
     job_id: uuid.UUID,

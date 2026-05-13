@@ -2,35 +2,45 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/Button";
+import { AiBadge } from "@/components/ui/Badge";
 import { jobsApi } from "@/lib/api";
 
-const LINKEDIN_DRAFT = `🤝 We're Hiring: Senior Frontend Developer | Acme Corp | Bengaluru (Remote-Optional)
-
-Are you passionate about building fast, accessible, and beautiful user experiences at scale? Acme Corp is looking for a Senior Frontend Developer to join our growing product team.
-
-🛠️ What You'll Do:
-• Lead architecture decisions for our core web platform
-• Build reusable component libraries used across 3 product lines
-• Collaborate with design, backend, and product teams
-
-✅ What We're Looking For:
-• 5+ years of React / Next.js experience
-• TypeScript proficiency
-• State management expertise (Redux, Zustand, or Context)
-
-💰 Compensation: ₹18–25 LPA | Equity available for senior roles
-
-📨 To apply, email your CV to: apply-sfd@hireflow.in (Subject: APPLY-SFD-2026)
-
-This opportunity is being shared by Riya, an AI recruiting assistant operating on behalf of Acme Corp. Riya is not a human recruiter. For questions, contact hr@acmecorp.in.`;
+function PostSkeleton() {
+  return (
+    <div className="space-y-2 animate-pulse">
+      {[80, 60, 90, 55, 70, 85, 65, 75].map((w, i) => (
+        <div key={i} className="h-3.5 rounded bg-surface-container-high" style={{ width: `${w}%` }} />
+      ))}
+    </div>
+  );
+}
 
 export default function DistributePage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [channels, setChannels] = useState({ linkedin: true, telegram: false, naukri: false });
   const [postTime, setPostTime] = useState("09:00");
+  const [editedDraft, setEditedDraft] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
+
+  const {
+    data: draftData,
+    isLoading: draftLoading,
+    isError: draftError,
+    error: draftErrorObj,
+  } = useQuery({
+    queryKey: ["linkedin-draft", params.id],
+    queryFn: () => jobsApi.linkedinDraft(params.id).then((r) => r.data),
+    staleTime: 5 * 60 * 1000, // cache 5 min — LLM call is expensive
+    retry: 1,
+  });
+
+  const postBody = editedDraft ?? draftData?.post_body ?? "";
+  const charCount = postBody.length;
+  const disclosurePresent =
+    postBody.includes("AI recruiting assistant") || postBody.includes("not a human");
 
   const distributeMutation = useMutation({
     mutationFn: () =>
@@ -41,18 +51,23 @@ export default function DistributePage({ params }: { params: { id: string } }) {
     onSuccess: () => router.push(`/jobs/${params.id}`),
   });
 
-  const disclosurePresent = LINKEDIN_DRAFT.includes("AI recruiting assistant") || LINKEDIN_DRAFT.includes("not a human");
-
   return (
     <AppShell
-      breadcrumbs={[{ label: "Jobs", href: "/jobs" }, { label: "Senior Frontend Developer", href: `/jobs/${params.id}` }, { label: "Distribution" }]}
+      breadcrumbs={[
+        { label: "Jobs", href: "/jobs" },
+        { label: "Job Detail", href: `/jobs/${params.id}` },
+        { label: "Distribution" },
+      ]}
     >
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-headline-lg text-on-surface">Distribution Setup</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-headline-lg text-on-surface">Distribution Setup</h1>
+          <AiBadge label="Riya" />
+        </div>
         <Button
           onClick={() => distributeMutation.mutate()}
           loading={distributeMutation.isPending}
-          disabled={!Object.values(channels).some(Boolean)}
+          disabled={!Object.values(channels).some(Boolean) || draftLoading}
         >
           <span className="material-symbols-outlined text-[16px]">rocket_launch</span>
           Launch Channels
@@ -66,12 +81,14 @@ export default function DistributePage({ params }: { params: { id: string } }) {
           <p className="text-label-xs font-semibold text-success">Compliance Requirements Met</p>
           <div className="flex gap-4 mt-1">
             <span className="flex items-center gap-1 text-label-xs text-on-surface-variant">
-              <span className="material-symbols-outlined text-[12px] text-success">check_circle</span>
-              AI Disclosure included
+              <span className={`material-symbols-outlined text-[12px] ${disclosurePresent || draftLoading ? "text-success" : "text-warning"}`}>
+                {disclosurePresent || draftLoading ? "check_circle" : "warning"}
+              </span>
+              AI Disclosure {draftLoading ? "checking…" : disclosurePresent ? "included" : "missing"}
             </span>
             <span className="flex items-center gap-1 text-label-xs text-on-surface-variant">
               <span className="material-symbols-outlined text-[12px] text-success">check_circle</span>
-              Salary disclosed (Karnataka)
+              Salary disclosed
             </span>
           </div>
         </div>
@@ -95,46 +112,91 @@ export default function DistributePage({ params }: { params: { id: string } }) {
                   LinkedIn
                 </label>
               </div>
-              <div className="flex items-center gap-2">
-                {disclosurePresent ? (
-                  <span className="flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-label-xs text-success">
-                    <span className="material-symbols-outlined text-[12px]">check_circle</span> AI disclosure present
+              <div className="flex items-center gap-2 text-label-xs text-on-surface-variant">
+                {!draftLoading && (
+                  <span className={charCount > 3000 ? "text-danger" : ""}>
+                    {charCount} / 3,000 chars
                   </span>
-                ) : (
-                  <span className="flex items-center gap-1 rounded-full bg-danger/10 px-2 py-0.5 text-label-xs text-danger">
-                    <span className="material-symbols-outlined text-[12px]">error</span> Missing disclosure
+                )}
+                {disclosurePresent && !draftLoading && (
+                  <span className="flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-success">
+                    <span className="material-symbols-outlined text-[12px]">check_circle</span>
+                    AI disclosure present
                   </span>
                 )}
               </div>
             </div>
 
+            {/* Post preview / editor */}
             <div className="rounded-xl border border-outline-variant bg-surface-container-low p-4">
               <div className="flex items-center gap-3 mb-3 pb-3 border-b border-outline-variant">
                 <div className="h-10 w-10 rounded-full bg-accent-ai/10 flex items-center justify-center">
                   <span className="material-symbols-outlined text-accent-ai">psychology</span>
                 </div>
                 <div>
-                  <p className="text-label-xs font-semibold text-on-surface">Riya (via Acme Corp)</p>
-                  <p className="text-label-xs text-on-surface-variant">AI Recruiting Assistant</p>
+                  <p className="text-label-xs font-semibold text-on-surface">Riya (AI Recruiting Assistant)</p>
+                  <p className="text-label-xs text-on-surface-variant">
+                    {draftLoading ? "Generating post with Gemini…" : "Post preview"}
+                  </p>
                 </div>
               </div>
-              <pre className="text-body-sm text-on-surface whitespace-pre-wrap font-sans leading-relaxed">
-                {LINKEDIN_DRAFT}
-              </pre>
+
+              {draftLoading && <PostSkeleton />}
+
+              {draftError && !draftLoading && (
+                <div className="rounded-lg border border-danger/20 bg-danger/5 p-3 text-label-xs text-danger">
+                  <strong>Could not generate draft:</strong>{" "}
+                  {(draftErrorObj as { response?: { data?: { detail?: string } } })?.response?.data?.detail ??
+                    "Job must be in Approved status. Confirm the JD first."}
+                </div>
+              )}
+
+              {!draftLoading && !draftError && (
+                editing ? (
+                  <textarea
+                    className="input min-h-[320px] font-sans text-body-sm leading-relaxed"
+                    value={postBody}
+                    onChange={(e) => setEditedDraft(e.target.value)}
+                  />
+                ) : (
+                  <pre className="text-body-sm text-on-surface whitespace-pre-wrap font-sans leading-relaxed">
+                    {postBody}
+                  </pre>
+                )
+              )}
             </div>
 
-            <div className="flex gap-3">
-              <Button variant="outline" size="sm">
-                <span className="material-symbols-outlined text-[14px]">edit</span>
-                Edit Draft
-              </Button>
-            </div>
+            {!draftLoading && !draftError && (
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setEditing(!editing);
+                    if (editing && editedDraft === null) setEditedDraft(postBody);
+                  }}
+                >
+                  <span className="material-symbols-outlined text-[14px]">
+                    {editing ? "visibility" : "edit"}
+                  </span>
+                  {editing ? "Preview" : "Edit Draft"}
+                </Button>
+                {editedDraft !== null && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => { setEditedDraft(null); setEditing(false); }}
+                  >
+                    Reset to AI draft
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Channel config sidebar */}
         <div className="space-y-4">
-          {/* Other channels */}
           <div className="card space-y-3">
             <h3 className="text-label-md font-semibold text-on-surface">Other Channels</h3>
             {[
@@ -157,7 +219,6 @@ export default function DistributePage({ params }: { params: { id: string } }) {
             ))}
           </div>
 
-          {/* Posting cadence */}
           <div className="card space-y-3">
             <h3 className="text-label-md font-semibold text-on-surface">Posting Cadence</h3>
             <div>
@@ -172,7 +233,7 @@ export default function DistributePage({ params }: { params: { id: string } }) {
               />
             </div>
             <p className="text-label-xs text-on-surface-variant">
-              Window: 09:00–19:00 IST. Min 90-min spacing between channels.
+              Window: 09:00–19:00 IST · Min 90-min spacing between channels.
             </p>
           </div>
         </div>
