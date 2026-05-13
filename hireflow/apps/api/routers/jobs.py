@@ -147,6 +147,26 @@ def get_job(
         }
 
 
+@router.patch("/jobs/{job_id}", status_code=status.HTTP_200_OK)
+def update_job(
+    job_id: uuid.UUID,
+    body: dict,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Partial update for job fields (status, title, etc.)."""
+    UPDATABLE = {"status", "title", "department", "seniority", "location", "must_haves",
+                 "nice_to_haves", "responsibilities", "tech_stack", "salary_min", "salary_max",
+                 "salary_currency", "salary_disclosed", "scoring_rubric", "shortlist_size"}
+    with get_db() as db:
+        job = db.query(Job).filter_by(id=job_id, tenant_id=user.tenant_id).first()
+        if job is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+        for key, value in body.items():
+            if key in UPDATABLE:
+                setattr(job, key, value)
+    return {"job_id": str(job_id), "updated": list(body.keys())}
+
+
 @router.post("/jobs/{job_id}/confirm", status_code=status.HTTP_200_OK)
 def confirm_job(
     job_id: uuid.UUID,
