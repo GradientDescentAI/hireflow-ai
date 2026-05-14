@@ -139,8 +139,9 @@ def process_cv_parsed(payload: dict, tenant_id: str) -> None:
 
 
 def process_scoring_complete(payload: dict, tenant_id: str) -> None:
-    """SCORING_COMPLETE → run Evaluation + Delivery via the hiring graph."""
-    from apps.worker.graph import hiring_graph
+    """SCORING_COMPLETE → run evaluation + delivery directly (skip the graph's jd_intake entry)."""
+    from packages.agents.evaluation import agent as evaluation_agent
+    from packages.agents.delivery import agent as delivery_agent
 
     job_id = payload.get("job_id")
     if not job_id:
@@ -148,22 +149,13 @@ def process_scoring_complete(payload: dict, tenant_id: str) -> None:
         return
 
     log.info("evaluation_start", job_id=job_id, tenant_id=tenant_id)
+    plan = payload.get("plan", "free")
 
-    state = {
-        "job_id": job_id,
-        "tenant_id": tenant_id,
-        "plan": payload.get("plan", "free"),
-        "scored_count": payload.get("scored_count", 0),
-        "scoring_errors": [],
-        "pipeline_error": None,
-        "status": "scoring_complete",
-    }
+    eval_result = evaluation_agent.run(job_id=job_id, tenant_id=tenant_id, plan=plan)
+    log.info("evaluation_complete", job_id=job_id, shortlisted=eval_result.get("shortlisted"))
 
-    result = hiring_graph.invoke(
-        state,
-        config={"configurable": {"thread_id": f"{job_id}-eval"}},
-    )
-    log.info("delivery_complete", job_id=job_id, status=result.get("status"))
+    delivery_result = delivery_agent.run(job_id=job_id, tenant_id=tenant_id)
+    log.info("delivery_complete", job_id=job_id, recruiter_notified=delivery_result.get("recruiter_notified"))
 
 
 _TOPIC_HANDLERS = {
