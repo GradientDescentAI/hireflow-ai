@@ -41,12 +41,13 @@ STAGE_ROUTES: dict[str, RouteConfig] = {
     "cv_extraction":  RouteConfig("gemini", _FLASH, temperature=0.0, max_tokens=3000),
 
     # Scoring — temperature MUST be 0 (SC-001)
-    "candidate_scoring": RouteConfig("gemini", _PRO, temperature=0.0, max_tokens=2048),
-    "bias_audit":        RouteConfig("gemini", _PRO, temperature=0.0, max_tokens=1024),
+    # gemini-2.5-pro reserves thinking tokens from max_tokens budget; use flash for predictable output
+    "candidate_scoring": RouteConfig("gemini", _FLASH, temperature=0.0, max_tokens=4096),
+    "bias_audit":        RouteConfig("gemini", _FLASH, temperature=0.0, max_tokens=2048),
 
     # Shortlist justifications — quality matters
-    "shortlist_justification_standard": RouteConfig("gemini", _PRO, temperature=0.3, max_tokens=1024),
-    "shortlist_justification_pro":      RouteConfig("gemini", _PRO, temperature=0.3, max_tokens=1024),
+    "shortlist_justification_standard": RouteConfig("gemini", _FLASH, temperature=0.3, max_tokens=2048),
+    "shortlist_justification_pro":      RouteConfig("gemini", _PRO,   temperature=0.3, max_tokens=8192),
 }
 
 
