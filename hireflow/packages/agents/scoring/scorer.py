@@ -58,10 +58,32 @@ def score_candidate(job: dict, candidate: dict, plan: str = "free") -> dict:
         response_format={"type": "json_object"},
     )
 
+    # Log the raw response if it looks empty/short for debugging
+    if not resp.content or len(resp.content) < 50:
+        import structlog as _sl
+        _sl.get_logger().warning(
+            "scoring_llm_short_response",
+            content_len=len(resp.content or ""),
+            content_preview=(resp.content or "")[:200],
+            model=resp.model,
+            input_tokens=resp.input_tokens,
+            output_tokens=resp.output_tokens,
+        )
+
+    # Strip markdown fences if present (Gemini sometimes wraps JSON in ```json ... ```)
+    content = resp.content.strip()
+    if content.startswith("```"):
+        content = content.split("\n", 1)[1] if "\n" in content else content[3:]
+        if content.endswith("```"):
+            content = content[:-3]
+        content = content.strip()
+
     try:
-        raw = json.loads(resp.content)
+        raw = json.loads(content)
     except json.JSONDecodeError as exc:
-        raise ValueError(f"LLM returned invalid JSON during scoring: {exc}") from exc
+        raise ValueError(
+            f"LLM returned invalid JSON during scoring: {exc} (len={len(resp.content or '')}, preview={resp.content[:120]!r})"
+        ) from exc
 
     return _normalise(raw, job.get("scoring_rubric", {}))
 
