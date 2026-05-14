@@ -41,9 +41,9 @@ def run(job_id: str, tenant_id: str) -> dict:
                 "reason": f"job.status is '{job.status}', expected shortlisted/scoring",
             }
 
-        recruiter = db.get(Recruiter, job.recruiter_id)
+        recruiter = db.get(Recruiter, job.created_by)
         if recruiter is None:
-            raise ValueError(f"Recruiter {job.recruiter_id} not found for job {job_id}")
+            raise ValueError(f"Recruiter {job.created_by} not found for job {job_id}")
 
         shortlist_count = (
             db.query(CandidateScore)

@@ -76,26 +76,26 @@ def run(job_id: str, tenant_id: str, plan: str = "free", shortlist_size: int = 1
             if s.bias_audit_passed is not None
         ) if shortlisted_scores else True
 
-    # ── Build scored_candidates list ──────────────────────────────────────────
-    scored_candidates = []
-    for score in score_records:
-        cid = str(score.candidate_id)
-        candidate = candidate_by_id.get(cid)
-        scored_candidates.append({
-            "rank": score.rank,
-            "composite_score": score.composite_score,
-            "dimension_scores": score.dimension_scores or {},
-            "criteria_met": score.criteria_met or [],
-            "justification": score.justification or "",
-            "strengths": score.strengths or [],
-            "risks": score.risks or [],
-            "near_miss_flag": score.near_miss_flag or False,
-            # Anonymised profile fields only
-            "experience": candidate.experience if candidate else [],
-            "education": candidate.education if candidate else [],
-            "skills_hard": candidate.skills_hard if candidate else [],
-            "skills_soft": candidate.skills_soft if candidate else [],
-        })
+        # Build scored_candidates list inside the session (avoid detached-instance errors)
+        scored_candidates = []
+        for score in score_records:
+            cid = str(score.candidate_id)
+            candidate = candidate_by_id.get(cid)
+            scored_candidates.append({
+                "rank": score.rank,
+                "composite_score": score.composite_score,
+                "dimension_scores": score.dimension_scores or {},
+                "criteria_met": score.criteria_met or [],
+                "justification": score.justification or "",
+                "strengths": score.strengths or [],
+                "risks": score.risks or [],
+                "near_miss_flag": score.near_miss_flag or False,
+                # Anonymised profile fields only
+                "experience": candidate.experience if candidate else [],
+                "education": candidate.education if candidate else [],
+                "skills_hard": candidate.skills_hard if candidate else [],
+                "skills_soft": candidate.skills_soft if candidate else [],
+            })
 
     bias_audit_result = {"passed": bias_audit_passed}
 
