@@ -112,6 +112,8 @@ class GeminiClient:
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
+            # Disable Gemini 2.5 internal "thinking" so max_tokens covers visible output only
+            "extra_body": {"reasoning_effort": "none"},
         }
         if response_format:
             kwargs["response_format"] = response_format
