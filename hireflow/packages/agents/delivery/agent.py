@@ -90,7 +90,7 @@ def run(job_id: str, tenant_id: str) -> dict:
             job.updated_at = now
 
     log_event(
-        EventType.SHORTLIST_READY,
+        EventType.SHORTLIST_DELIVERED,
         tenant_id=tenant_uuid,
         entity_type="job",
         entity_id=job_uuid,

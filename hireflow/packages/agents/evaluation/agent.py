@@ -127,7 +127,7 @@ def run(job_id: str, tenant_id: str, plan: str = "free", shortlist_size: int = 1
             job.updated_at = now
 
     log_event(
-        EventType.SHORTLIST_READY,
+        EventType.SHORTLIST_GENERATED,
         tenant_id=tenant_uuid,
         entity_type="job",
         entity_id=job_uuid,
