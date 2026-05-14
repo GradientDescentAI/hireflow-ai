@@ -30,7 +30,18 @@ def send_shortlist_notification(
 
     Returns True on success, False on SendGrid error (logged by caller).
     """
-    sg = sendgrid.SendGridAPIClient(api_key=os.environ["SENDGRID_API_KEY"])
+    api_key = os.environ.get("SENDGRID_API_KEY")
+    if not api_key:
+        import structlog as _sl
+        _sl.get_logger().warning(
+            "sendgrid_not_configured",
+            recruiter=recruiter_email,
+            job=job_id,
+            note="Skipping email delivery; shortlist available in UI",
+        )
+        return False
+
+    sg = sendgrid.SendGridAPIClient(api_key=api_key)
 
     bias_note = (
         "Our AI bias audit passed for this shortlist."
