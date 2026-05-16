@@ -153,9 +153,10 @@ class LinkedInBrowser:
         import structlog as _sl
         _log = _sl.get_logger()
         try:
-            from playwright_stealth import stealth_sync  # type: ignore[import]
-            stealth_sync(self._context)
-            _log.info("linkedin_stealth_applied", method="playwright_stealth")
+            # playwright-stealth 2.x API
+            from playwright_stealth import Stealth  # type: ignore[import]
+            Stealth().apply_stealth_sync(self._context)
+            _log.info("linkedin_stealth_applied", method="Stealth.apply_stealth_sync")
         except Exception as _exc:
             _log.warning("linkedin_stealth_fallback", error=str(_exc))
             # Fallback to manual minimal patch if the library import fails
