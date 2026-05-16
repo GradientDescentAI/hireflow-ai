@@ -150,10 +150,14 @@ class LinkedInBrowser:
 
         # Stealth: patch navigator.webdriver + ~20 other fingerprint vectors via playwright-stealth.
         # Without this LinkedIn serves an empty body for headless Chromium.
+        import structlog as _sl
+        _log = _sl.get_logger()
         try:
             from playwright_stealth import stealth_sync  # type: ignore[import]
             stealth_sync(self._context)
-        except Exception:
+            _log.info("linkedin_stealth_applied", method="playwright_stealth")
+        except Exception as _exc:
+            _log.warning("linkedin_stealth_fallback", error=str(_exc))
             # Fallback to manual minimal patch if the library import fails
             self._context.add_init_script(
                 "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
