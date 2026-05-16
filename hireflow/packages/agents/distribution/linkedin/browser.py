@@ -76,9 +76,24 @@ def _detect_captcha(page: Page) -> bool:
     return "captcha" in content or page.locator("#captcha-internal").count() > 0
 
 
-def _is_logged_in(page: Page) -> bool:
+_LOGGED_IN_SELECTORS = (
+    ".global-nav__me-photo",
+    "[data-control-name='nav.settings']",
+    "img.global-nav__me-photo",
+    ".feed-identity-module",            # left-rail profile card on /feed/
+    "button[aria-label*='View profile']",
+    ".share-box-feed-entry__trigger",   # "Start a post" button — proves we're on the feed
+)
+
+
+def _is_logged_in(page: Page, timeout_ms: int = 12000) -> bool:
+    """True if the page shows any of several logged-in markers, or if URL is /feed/."""
+    # URL check first — /login auto-redirects to /feed/ when authenticated
+    if "/feed" in page.url and "login" not in page.url:
+        return True
+    selector = ", ".join(_LOGGED_IN_SELECTORS)
     try:
-        page.wait_for_selector(".global-nav__me-photo, [data-control-name='nav.settings']", timeout=5000)
+        page.wait_for_selector(selector, timeout=timeout_ms)
         return True
     except Exception:
         return False
@@ -158,11 +173,31 @@ class LinkedInBrowser:
             page.close()
 
     def _do_post(self, page: Page, post_body: str) -> PostResult:
+        import structlog as _sl
+        log = _sl.get_logger()
+
         # Navigate to feed and check session state
         page.goto("https://www.linkedin.com/feed/", wait_until="domcontentloaded")
         _human_delay(2, 4)
+        log.info(
+            "linkedin_post_navigate",
+            url=page.url,
+            title=(page.title() or "")[:120],
+            cookies_loaded=len(self._cookies),
+        )
 
         if not _is_logged_in(page):
+            log.warning("linkedin_not_logged_in_via_cookies", url=page.url)
+            # Save diagnostic screenshot before attempting password login
+            try:
+                from packages.storage import client as storage
+                import uuid as _uuid, datetime as _dt
+                shot_bytes = page.screenshot(full_page=False)
+                shot_key = f"diag/linkedin-precookie-fail-{_dt.datetime.utcnow().strftime('%Y%m%dT%H%M%S')}-{_uuid.uuid4().hex[:6]}.png"
+                storage.upload(shot_key, shot_bytes, "image/png")
+                log.info("linkedin_diag_screenshot", key=shot_key, url=page.url)
+            except Exception as _exc:
+                log.warning("linkedin_diag_screenshot_failed", error=str(_exc))
             self._login(page)
 
         if _detect_mfa(page):
@@ -210,8 +245,29 @@ class LinkedInBrowser:
         )
 
     def _login(self, page: Page) -> None:
+        import structlog as _sl
+        log = _sl.get_logger()
+
         page.goto("https://www.linkedin.com/login", wait_until="domcontentloaded")
         _human_delay(1, 2)
+        log.info("linkedin_login_navigate", url=page.url, title=(page.title() or "")[:120])
+
+        # Cookies may have authenticated us — /login auto-redirects to /feed/ in that case
+        if "/feed" in page.url and "login" not in page.url:
+            log.info("linkedin_already_authenticated_via_cookies")
+            return
+
+        # If we can't see the username field, the page is showing a challenge instead of the form
+        try:
+            page.wait_for_selector("#username", timeout=10000)
+        except Exception:
+            if _detect_mfa(page):
+                raise MFARequiredException(f"MFA challenge on login page; url={page.url}")
+            if _detect_captcha(page):
+                raise CAPTCHADetectedException(f"CAPTCHA on login page; url={page.url}")
+            raise LoginFailedException(
+                f"Login form not present (no #username); url={page.url} title={(page.title() or '')[:80]}"
+            )
 
         _type_humanly(page, "#username", self._username)
         _human_delay(0.5, 1.2)
