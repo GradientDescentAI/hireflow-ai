@@ -206,8 +206,50 @@ class LinkedInBrowser:
         if _detect_captcha(page):
             raise CAPTCHADetectedException("LinkedIn CAPTCHA detected")
 
-        # Open the post composer
-        page.click("button.share-box-feed-entry__trigger", timeout=10000)
+        # Wait for feed to fully render — LinkedIn's share box is JS-rendered
+        try:
+            page.wait_for_load_state("networkidle", timeout=15000)
+        except Exception:
+            pass  # not fatal; the explicit selector wait below is the real gate
+        _human_delay(1.5, 3)
+
+        # Open the post composer — selectors cover legacy + 2024+ LinkedIn DOM
+        share_trigger_selectors = [
+            "button.share-box-feed-entry__trigger",
+            "button[aria-label='Start a post']",
+            "button[aria-label*='Start a post']",
+            "div.share-box-feed-entry__trigger",
+            ".share-box-feed-entry__trigger",
+            "button.artdeco-button[aria-label*='post']",
+        ]
+        composer_opened = False
+        for sel in share_trigger_selectors:
+            try:
+                page.locator(sel).first.click(timeout=4000)
+                composer_opened = True
+                log.info("linkedin_composer_opened", selector=sel)
+                break
+            except Exception:
+                continue
+        if not composer_opened:
+            # One last fallback: click button whose text contains "Start a post"
+            try:
+                page.get_by_role("button", name=lambda n: n and "start a post" in n.lower()).first.click(timeout=5000)
+                composer_opened = True
+                log.info("linkedin_composer_opened", selector="get_by_role:start a post")
+            except Exception:
+                # Save diagnostic screenshot for the post-feed state
+                try:
+                    from packages.storage import client as storage
+                    import uuid as _uuid, datetime as _dt
+                    shot_bytes = page.screenshot(full_page=False)
+                    shot_key = f"diag/linkedin-no-composer-{_dt.datetime.utcnow().strftime('%Y%m%dT%H%M%S')}-{_uuid.uuid4().hex[:6]}.png"
+                    storage.upload(shot_key, shot_bytes, "image/png")
+                    log.warning("linkedin_composer_not_found", url=page.url, screenshot=shot_key)
+                except Exception:
+                    log.warning("linkedin_composer_not_found", url=page.url)
+                raise
+
         _human_delay(1.5, 3)
 
         # Type post content in the editor
@@ -227,9 +269,24 @@ class LinkedInBrowser:
         # Screenshot the draft before posting
         screenshot = page.screenshot(full_page=False)
 
-        # Click Post button
-        post_btn = page.locator("button.share-actions__primary-action, button[data-control-name='share.post']")
-        post_btn.first.click(timeout=10000)
+        # Click Post button — selectors cover legacy + 2024+ LinkedIn DOM
+        post_button_selectors = [
+            "button.share-actions__primary-action",
+            "button[data-control-name='share.post']",
+            "button.artdeco-button--primary:has-text('Post')",
+            "button[aria-label*='Post']",
+        ]
+        post_clicked = False
+        for sel in post_button_selectors:
+            try:
+                page.locator(sel).first.click(timeout=4000)
+                post_clicked = True
+                log.info("linkedin_post_button_clicked", selector=sel)
+                break
+            except Exception:
+                continue
+        if not post_clicked:
+            raise RuntimeError(f"Could not find Post button on share modal; url={page.url}")
         _human_delay(3, 6)
 
         # Try to extract post URL from the feed
