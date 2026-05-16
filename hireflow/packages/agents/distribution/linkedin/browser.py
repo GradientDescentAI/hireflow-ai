@@ -232,9 +232,10 @@ class LinkedInBrowser:
             except Exception:
                 continue
         if not composer_opened:
-            # One last fallback: click button whose text contains "Start a post"
+            # One last fallback: click button whose accessible name matches "Start a post"
             try:
-                page.get_by_role("button", name=lambda n: n and "start a post" in n.lower()).first.click(timeout=5000)
+                import re as _re
+                page.get_by_role("button", name=_re.compile(r"start a post", _re.IGNORECASE)).first.click(timeout=5000)
                 composer_opened = True
                 log.info("linkedin_composer_opened", selector="get_by_role:start a post")
             except Exception:

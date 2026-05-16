@@ -485,6 +485,25 @@ async def upload_cv(
     }
 
 
+@router.get("/_diag/screenshot")
+def get_diag_screenshot(
+    key: str,
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """Return a presigned URL for a diagnostic screenshot in object storage.
+
+    Only allows keys under the `diag/` prefix.
+    """
+    if not key.startswith("diag/"):
+        raise HTTPException(status_code=400, detail="key must start with diag/")
+    from packages.storage import client as storage
+    try:
+        url = storage.presigned_url(key, expires_hours=1)
+    except Exception as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return {"key": key, "url": url}
+
+
 @router.get("/jobs/{job_id}/audit")
 def get_audit_trail(
     job_id: uuid.UUID,
