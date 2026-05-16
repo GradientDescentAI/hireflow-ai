@@ -148,10 +148,16 @@ class LinkedInBrowser:
 
         self._context = self._browser.new_context(**ctx_args)
 
-        # Stealth: override navigator.webdriver
-        self._context.add_init_script(
-            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-        )
+        # Stealth: patch navigator.webdriver + ~20 other fingerprint vectors via playwright-stealth.
+        # Without this LinkedIn serves an empty body for headless Chromium.
+        try:
+            from playwright_stealth import stealth_sync  # type: ignore[import]
+            stealth_sync(self._context)
+        except Exception:
+            # Fallback to manual minimal patch if the library import fails
+            self._context.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            )
 
         if self._cookies:
             self._context.add_cookies(self._cookies)
