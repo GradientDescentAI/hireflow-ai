@@ -177,14 +177,39 @@ class LinkedInBrowser:
         log = _sl.get_logger()
 
         # Navigate to feed and check session state
-        page.goto("https://www.linkedin.com/feed/", wait_until="domcontentloaded")
+        # Use "load" instead of "domcontentloaded" — SPA needs JS to execute before any UI exists
+        page.goto("https://www.linkedin.com/feed/", wait_until="load", timeout=30000)
+        try:
+            page.wait_for_load_state("networkidle", timeout=15000)
+        except Exception:
+            pass
         _human_delay(2, 4)
+
+        # Snapshot what we actually got — body length & a sample of body text
+        try:
+            body_html = page.evaluate("document.body ? document.body.innerHTML.length : 0")
+            body_text = (page.evaluate("document.body ? document.body.innerText : ''") or "")[:300]
+        except Exception:
+            body_html, body_text = 0, ""
         log.info(
             "linkedin_post_navigate",
             url=page.url,
             title=(page.title() or "")[:120],
             cookies_loaded=len(self._cookies),
+            body_html_len=body_html,
+            body_text_preview=body_text,
         )
+
+        # Always save an early screenshot for diagnostics, regardless of outcome
+        try:
+            from packages.storage import client as storage
+            import uuid as _uuid, datetime as _dt
+            shot_bytes = page.screenshot(full_page=False)
+            shot_key = f"diag/linkedin-after-nav-{_dt.datetime.utcnow().strftime('%Y%m%dT%H%M%S')}-{_uuid.uuid4().hex[:6]}.png"
+            storage.upload(shot_key, shot_bytes, "image/png")
+            log.info("linkedin_diag_screenshot_after_nav", key=shot_key)
+        except Exception as _exc:
+            log.warning("linkedin_diag_screenshot_failed", error=str(_exc))
 
         if not _is_logged_in(page):
             log.warning("linkedin_not_logged_in_via_cookies", url=page.url)
