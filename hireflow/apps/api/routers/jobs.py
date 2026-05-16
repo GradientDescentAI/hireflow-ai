@@ -56,6 +56,44 @@ class JobResponse(BaseModel):
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
+@router.get("/jobs")
+def list_jobs(
+    user: Annotated[TokenData, Depends(get_current_user)],
+):
+    """List jobs for the current tenant, newest first."""
+    with get_db() as db:
+        jobs = (
+            db.query(Job)
+            .filter_by(tenant_id=user.tenant_id)
+            .order_by(Job.created_at.desc())
+            .all()
+        )
+        # Pre-fetch channel posts grouped by job_id for the listing row
+        job_ids = [j.id for j in jobs]
+        posts = (
+            db.query(ChannelPost).filter(ChannelPost.job_id.in_(job_ids)).all()
+            if job_ids else []
+        )
+        by_job: dict[uuid.UUID, dict] = {}
+        for p in posts:
+            by_job.setdefault(p.job_id, {})[p.channel] = {
+                "status": p.delivery_status,
+                "post_url": p.post_url,
+            }
+        return [
+            {
+                "id": str(j.id),
+                "title": j.title,
+                "status": j.status,
+                "collection_email": j.collection_email,
+                "channel_status": by_job.get(j.id, {}),
+                "created_at": j.created_at.isoformat(),
+                "posted_at": j.posted_at.isoformat() if j.posted_at else None,
+            }
+            for j in jobs
+        ]
+
+
 @router.post("/jobs", status_code=status.HTTP_202_ACCEPTED)
 def create_job(
     body: CreateJobRequest,
